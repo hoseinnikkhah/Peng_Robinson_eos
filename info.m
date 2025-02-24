@@ -72,3 +72,17 @@ title('The solubility data of Ceftriaxone sodium drug in SC-CO2');
 
 legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
 xlim([260 960]);
+
+figure(4)
+hold on;
+scatter(rho_CO2(1,:), y_b(1,:), 'r', 'o', 'MarkerFaceColor', 'r');
+scatter(rho_CO2(2,:), y_b(2,:), 'g', 's', 'MarkerFaceColor', 'g');
+scatter(rho_CO2(3,:), y_b(3,:), 'b', 'd', 'MarkerFaceColor', 'b');
+scatter(rho_CO2(4,:), y_b(4,:), 'm', '^', 'MarkerFaceColor', 'm');
+
+xlabel('Density [kg/m3]');
+ylabel('Drug solubility');
+title('The solubility data of Ceftriaxone sodium drug in SC-CO2');
+
+legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
+xlim([260 960]);
