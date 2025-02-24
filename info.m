@@ -25,7 +25,7 @@ for j=1:4
         S(j,i) = (rho_CO2(j,i) * y_1(j,i) * Mw_drug)/(Mw_CO2 * (1 - y_1(j,i)));
     end
 end
-S = S*100
+% S = S*100;
 % C_drug = [0.021 0.026 0.029 0.039 0.046 0.066];     % solubility or concentration [g/L]
 
 figure(1);
@@ -56,3 +56,6 @@ title('The solubility data of Ceftriaxone sodium drug in SC-CO2');
 
 legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
 xlim([115 280]);
+ytickformat('%.2f');
+yticks(0.4:1:8.4);
+
