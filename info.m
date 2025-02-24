@@ -10,6 +10,7 @@ S = linspace(0,1,6);
 for i=1:6
     S(i) = (rho_CO2(i) * y_1(i) * Mw_drug)/(Mw_CO2 * (1 - y_1(i)));
 
+end
 
 % C_drug = [0.021 0.026 0.029 0.039 0.046 0.066];     % solubility or concentration [g/L]
 
