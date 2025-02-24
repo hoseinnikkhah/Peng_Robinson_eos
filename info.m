@@ -35,3 +35,4 @@ xlabel('Pressure [bar]');
 ylabel('Drug solubility');
 title('The solubility data of Ceftriaxone sodium drug in SC-CO2');
 
+legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
