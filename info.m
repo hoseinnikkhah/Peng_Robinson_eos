@@ -26,12 +26,12 @@ end
 figure;
 hold on;
 
-scatter(P, S(1,:), 100, 'r', 'o', 'MarkerFaceColor', 'r', 'MarkerEdgeWidth', 1.5);  
-scatter(P, S(2,:), 100, 'g', 's', 'MarkerFaceColor', 'g', 'MarkerEdgeWidth', 1.5);  
-scatter(P, S(3,:), 100, 'b', 'd', 'MarkerFaceColor', 'b', 'MarkerEdgeWidth', 1.5);  
-scatter(P, S(4,:), 100, 'm', '^', 'MarkerFaceColor', 'm', 'MarkerEdgeWidth', 1.5);  
+scatter(P, S(1,:), 'r', 'o', 'MarkerFaceColor', 'r');  
+scatter(P, S(2,:), 'g', 's', 'MarkerFaceColor', 'g');  
+scatter(P, S(3,:), 'b', 'd', 'MarkerFaceColor', 'b');  
+scatter(P, S(4,:), 'm', '^', 'MarkerFaceColor', 'm');  
 
 xlabel('Pressure [bar]');
 ylabel('Drug solubility');
 title('The solubility data of Ceftriaxone sodium drug in SC-CO2');
-grid on;
+
