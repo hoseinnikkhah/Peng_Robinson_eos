@@ -30,10 +30,10 @@ end
 
 figure(1);
 hold on;
-scatter(P, S(1,:), 'r', 'o', 'MarkerFaceColor', 'r');  
-scatter(P, S(2,:), 'g', 's', 'MarkerFaceColor', 'g');  
-scatter(P, S(3,:), 'b', 'd', 'MarkerFaceColor', 'b');  
-scatter(P, S(4,:), 'm', '^', 'MarkerFaceColor', 'm');  
+scatter(P, S(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');  
+scatter(P, S(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');  
+scatter(P, S(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');  
+scatter(P, S(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');  
 
 xlabel('Pressure [bar]');
 ylabel('Drug solubility');
@@ -45,10 +45,10 @@ ytickformat('%.2f');
 
 figure(2);
 hold on;
-scatter(P, y_b(1,:), 'r', 'o', 'MarkerFaceColor', 'r');
-scatter(P, y_b(2,:), 'g', 's', 'MarkerFaceColor', 'g');  
-scatter(P, y_b(3,:), 'b', 'd', 'MarkerFaceColor', 'b');  
-scatter(P, y_b(4,:), 'm', '^', 'MarkerFaceColor', 'm');  
+scatter(P, y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
+scatter(P, y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');  
+scatter(P, y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');  
+scatter(P, y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');  
 
 xlabel('Pressure [bar]');
 ylabel('Drug solubility');
@@ -61,10 +61,10 @@ yticks(0.4:1:8.4);
 
 figure(3)
 hold on;
-scatter(rho_CO2(1,:), S(1,:), 'r', 'o', 'MarkerFaceColor', 'r');
-scatter(rho_CO2(2,:), S(2,:), 'g', 's', 'MarkerFaceColor', 'g');
-scatter(rho_CO2(3,:), S(3,:), 'b', 'd', 'MarkerFaceColor', 'b');
-scatter(rho_CO2(4,:), S(4,:), 'm', '^', 'MarkerFaceColor', 'm');
+scatter(rho_CO2(1,:), S(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
+scatter(rho_CO2(2,:), S(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');
+scatter(rho_CO2(3,:), S(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');
+scatter(rho_CO2(4,:), S(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');
 
 xlabel('Density [kg/m3]');
 ylabel('Drug solubility');
@@ -75,10 +75,10 @@ xlim([260 960]);
 
 figure(4)
 hold on;
-scatter(rho_CO2(1,:), y_b(1,:), 15, 'r', 'o', 'MarkerFaceColor', 'r');
-scatter(rho_CO2(2,:), y_b(2,:), 15, 'g', 's', 'MarkerFaceColor', 'g');
-scatter(rho_CO2(3,:), y_b(3,:), 15, 'b', 'd', 'MarkerFaceColor', 'b');
-scatter(rho_CO2(4,:), y_b(4,:), 15, 'm', '^', 'MarkerFaceColor', 'm');
+scatter(rho_CO2(1,:), y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
+scatter(rho_CO2(2,:), y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');
+scatter(rho_CO2(3,:), y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');
+scatter(rho_CO2(4,:), y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');
 
 xlabel('Density [kg/m3]');
 ylabel('Drug solubility');
