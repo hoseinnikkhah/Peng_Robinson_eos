@@ -3,4 +3,4 @@ T = 253;
 V_m = 300;
 R = 8.314;
 
-Z = (P*V_m)/(R*T);
+Z_emprical = (P*V_m)/(R*T);
