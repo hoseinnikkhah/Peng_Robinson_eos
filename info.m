@@ -41,6 +41,7 @@ title('The solubility data of Ceftriaxone sodium drug in SC-CO2');
 
 legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
 xlim([115 280]);
+ytickformat('%.2f');
 
 figure(2);
 hold on;
