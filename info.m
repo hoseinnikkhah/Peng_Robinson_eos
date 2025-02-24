@@ -75,10 +75,10 @@ xlim([260 960]);
 
 figure(4)
 hold on;
-scatter(rho_CO2(1,:), y_b(1,:), 'r', 'o', 'MarkerFaceColor', 'r');
-scatter(rho_CO2(2,:), y_b(2,:), 'g', 's', 'MarkerFaceColor', 'g');
-scatter(rho_CO2(3,:), y_b(3,:), 'b', 'd', 'MarkerFaceColor', 'b');
-scatter(rho_CO2(4,:), y_b(4,:), 'm', '^', 'MarkerFaceColor', 'm');
+scatter(rho_CO2(1,:), y_b(1,:), 15, 'r', 'o', 'MarkerFaceColor', 'r');
+scatter(rho_CO2(2,:), y_b(2,:), 15, 'g', 's', 'MarkerFaceColor', 'g');
+scatter(rho_CO2(3,:), y_b(3,:), 15, 'b', 'd', 'MarkerFaceColor', 'b');
+scatter(rho_CO2(4,:), y_b(4,:), 15, 'm', '^', 'MarkerFaceColor', 'm');
 
 xlabel('Density [kg/m3]');
 ylabel('Drug solubility');
