@@ -23,3 +23,12 @@ end
 
 % C_drug = [0.021 0.026 0.029 0.039 0.046 0.066];     % solubility or concentration [g/L]
 
+figure;
+hold on;
+scatter(P, S(1,:), 'filled', 'MarkerFaceColor', 'b');
+scatter(P, S(2,:), 'filled', 'MarkerFaceColor', 'b');  
+scatter(P, S(3,:), 'filled', 'MarkerFaceColor', 'b');  
+scatter(P, S(4,:), 'filled', 'MarkerFaceColor', 'b');  
+
+xlabel('Pressure [bar]');  % Label for the x-axis
+ylabel('Drug solubility');  % Label for the y-axis
