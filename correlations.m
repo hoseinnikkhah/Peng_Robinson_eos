@@ -1,5 +1,5 @@
-function [a, b, c, A, B, D] = correlations(T_c, P_c, T, omega)
-    R = 8.314;      [J/mol·K]
+function [a, b, d, A, B, D] = correlations(T_c, P_c, T, omega)
+    R = 8.314;      % [J/mol·K]
 
     m = 0.37464 + 1.5422*omega - 0.26992*(omega^2);
 
