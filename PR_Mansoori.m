@@ -15,4 +15,4 @@ T_c_CO2 = 1149.5;       % Temp [K]
 P_c_CO2 = 10.57;        % Pressure [bar]
 omega_CO2 = 2.0964;
 
-correlations(T_c_CO2, P_c_CO2, T, P, omega_CO2)
+set_A = correlations(T_c_CO2, P_c_CO2, T, P, omega_CO2);
