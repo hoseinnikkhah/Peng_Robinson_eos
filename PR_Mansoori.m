@@ -2,17 +2,21 @@
 Mw_drug = 598.5;
 Mw_CO2 = 44.01;
 Mw_methanol = 32.04;
-T = [308 318 328 338];
-P = [120 150 180 210 240 270];
+T = [308 318 328 338];                  % Temp range
+P = [120 150 180 210 240 270];          % Pressure range
 
 % The thermodynamic properties of Ceftriaxone sodium
-T_c_drug = 304.18;      % Temp [K]
-P_c_drug = 73.8;        % Pressure [bar]
+T_c_drug = 304.18;      % Critical Temp [K]
+P_c_drug = 73.8;        % Critical Pressure [bar]
 omega_drug = 0.225;
 
 % The thermodynamic properties of CO2
-T_c_CO2 = 1149.5;       % Temp [K]
-P_c_CO2 = 10.57;        % Pressure [bar]
+T_c_CO2 = 1149.5;       % Critical Temp [K]
+P_c_CO2 = 10.57;        % Critical Pressure [bar]
 omega_CO2 = 2.0964;
 
-[a, b, d, A, B, D] = correlations(T_c_CO2,P_c_CO2,T,P,omega_CO2);
+data = zeros(4,6);
+for i=1:4
+    for j=1:6
+        [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_CO2,T(i),P(j),omega_CO2);
+        data(i,j) = [a, b, d, A, B, D];
