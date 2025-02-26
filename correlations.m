@@ -10,5 +10,4 @@ function [a, b, d, A, B, D] = correlations(T_c, P_c, T, P, omega)
     A = (a*P)/((R*T)^2);
     B = (b*P)/(R*T);
     D = (d*P)/(R*T);
-    data_set = [a b d A B D]
 end
