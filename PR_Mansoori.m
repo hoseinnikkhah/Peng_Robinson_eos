@@ -2,19 +2,23 @@
 Mw_drug = 598.5;
 Mw_CO2 = 44.01;
 Mw_methanol = 32.04;
-T = [308 318 328 338]; % Temp range
-P = [120 150 180 210 240 270]; % Pressure range
+T = [308 318 328 338];              % Temp range
+P = [120 150 180 210 240 270];      % Pressure range
+
 % The thermodynamic properties of Ceftriaxone sodium
-T_c_drug = 304.18; % Critical Temp [K]
-P_c_drug = 73.8; % Critical Pressure [bar]
+T_c_drug = 304.18;                  % Critical Temp [K]
+P_c_drug = 73.8;                    % Critical Pressure [bar]
 omega_drug = 0.225;
+
 % The thermodynamic properties of CO2
-T_c_CO2 = 1149.5; % Critical Temp [K]
-P_c_CO2 = 10.57; % Critical Pressure [bar]
+T_c_CO2 = 1149.5;                   % Critical Temp [K]
+P_c_CO2 = 10.57;                    % Critical Pressure [bar]
 omega_CO2 = 2.0964;
+
 data_CO2 = zeros(3,24);
 data_drug = zeros(3,24);
 count = 1;
+
 for i=1:4
     for j=1:6
         [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_CO2,T(i),P(j),omega_CO2);
@@ -24,8 +28,10 @@ for i=1:4
         count = count + 1;
     end
 end
+
 % coefficents
 Z = zeros(1,24);
+
 for i=1:24
     A_val = data_drug(1,i);
     B_val = data_drug(2,i);
@@ -49,3 +55,4 @@ for i=1:24
         Z(1,i) = NaN; % Handle case where no real roots exist
     end
 end
+
