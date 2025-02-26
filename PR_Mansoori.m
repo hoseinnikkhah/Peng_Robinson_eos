@@ -2,8 +2,8 @@
 Mw_drug = 598.5;
 Mw_CO2 = 44.01;
 Mw_methanol = 32.04;
-T = 338;
-P = 270;
+T = [308 318 328 338];
+P = [120 150 180 210 240 270];
 
 % The thermodynamic properties of Ceftriaxone sodium
 T_c_drug = 304.18;      % Temp [K]
