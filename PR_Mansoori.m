@@ -2,8 +2,11 @@
 Mw_drug = 598.5;
 Mw_CO2 = 44.01;
 Mw_methanol = 32.04;
+
 T = [308 318 328 338];              % Temp range
 P = [120 150 180 210 240 270];      % Pressure range
+k_ij = [0.103 0.117 0.126 0.134];
+
 
 % The thermodynamic properties of Ceftriaxone sodium
 T_c_drug = 304.18;                  % Critical Temp [K]
@@ -29,4 +32,10 @@ for i=1:4
     end
 end
 
-
+a_ij = zeros(4,6);
+for i=1:4
+    for j=1:6
+        factor = 6*(i-1) + j;
+        a_ij(i,j) = sqrt(data_CO2(1,factor)*data_drug(1,factor))*k_ij(i);
+    end
+end
