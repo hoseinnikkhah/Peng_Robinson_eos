@@ -56,3 +56,22 @@ for i=1:24
     end
 end
 
+Z_reshaped = reshape(Z, 6, 4)';
+
+figure;
+
+for temp_idx = 1:4
+    subplot(2, 2, temp_idx);
+    plot(P, Z_reshaped(temp_idx, :), 'o-', 'LineWidth', 1.5);
+    
+    % Add labels and title
+    xlabel('Pressure (bar)');
+    ylabel('Compressibility factor Z');
+    title(['T = ', num2str(T(temp_idx)), ' K']);
+    
+    % Add grid for better readability
+    grid on;
+end
+
+% Adjust the layout
+sgtitle('Compressibility Factor vs Pressure at Different Temperatures');
