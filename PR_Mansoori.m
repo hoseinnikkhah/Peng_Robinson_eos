@@ -16,9 +16,11 @@ P_c_CO2 = 10.57;        % Critical Pressure [bar]
 omega_CO2 = 2.0964;
 
 data = zeros(6,24);
+count = 1;
 for i=1:4
     for j=1:6
         [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_CO2,T(i),P(j),omega_CO2);
-        data(i,j) = [a, b, d, A, B, D];
+        data(:, count) = [a; b; d; A; B; D];
+        count = count + 1;
     end
 end
