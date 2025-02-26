@@ -29,13 +29,10 @@ for i=1:4
 end
 
 % coefficents
+c3 = 1;
+for i=1:24
+    c2 = data_drug(2,i) - 1;
+    c1 = data_drug(3,i) - 3*data_drug(2,i) + data_drug(1,i) - 2*sqrt(data_drug(1,i)*data_drug(3,i));
+    c0 = data_drug(2,i)^3 + data_drug(2,i)^2 - data_drug(1,i)*data_drug(2,i) - data_drug(2,i)*data_drug(3,i) + 2*data_drug(2,i)*sqrt(data_drug(1,i)*data_drug(3,i));
 
-%for i=1:24
-%    for j=1:3
-%        c3 = 1;
-%        c2 = data(i,j)
-
-%c2 = B - 1;
-%c1 = D - 3*B^2 - 2*B + A - 2*sqrt(A*D);
-%c0 = B^3 + B^2 - A*B - B*D + 2*B*sqrt(A*D);
 
