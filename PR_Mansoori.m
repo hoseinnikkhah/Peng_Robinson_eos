@@ -15,12 +15,15 @@ T_c_CO2 = 1149.5;       % Critical Temp [K]
 P_c_CO2 = 10.57;        % Critical Pressure [bar]
 omega_CO2 = 2.0964;
 
-data = zeros(6,24);
+data_CO2 = zeros(6,24);
+data_drug = zeros(6,24);
 count = 1;
 for i=1:4
     for j=1:6
         [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_CO2,T(i),P(j),omega_CO2);
-        data(:, count) = [a; b; d; A; B; D];
+        data_CO2(:, count) = [a; b; d; A; B; D];
+        [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_drug,T(i),P(j),omega_drug);
+        data_drug(:, count) = [a; b; d; A; B; D];
         count = count + 1;
     end
 end
