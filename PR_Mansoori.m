@@ -5,7 +5,7 @@ Mw_methanol = 32.04;
 
 T = [308 318 328 338];              % Temp range
 P = [120 150 180 210 240 270];      % Pressure range
-k_ij = [0.103 0.117 0.126 0.134];
+k_ij = [0.103 0.117 0.126 0.134];   % Binary interaction parameter for PR/KM EoS
 
 
 % The thermodynamic properties of Ceftriaxone sodium
@@ -25,9 +25,9 @@ count = 1;
 for i=1:4
     for j=1:6
         [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_CO2,T(i),P(j),omega_CO2);
-        data_CO2(:, count) = [a; b; d];
+        data_CO2(:, count) = [a; b; d; A; B; D];
         [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_drug,T(i),P(j),omega_drug);
-        data_drug(:, count) = [a; b; d];
+        data_drug(:, count) = [a; b; d; A; B; D];
         count = count + 1;
     end
 end
@@ -39,3 +39,4 @@ for i=1:4
         a_ij(i,j) = sqrt(data_CO2(1,factor)*data_drug(1,factor))*k_ij(i);
     end
 end
+
