@@ -18,8 +18,8 @@ T_c_CO2 = 1149.5;                   % Critical Temp [K]
 P_c_CO2 = 10.57;                    % Critical Pressure [bar]
 omega_CO2 = 2.0964;
 
-data_CO2 = zeros(3,24);
-data_drug = zeros(3,24);
+data_CO2 = zeros(6,24);
+data_drug = zeros(6,24);
 count = 1;
 
 for i=1:4
