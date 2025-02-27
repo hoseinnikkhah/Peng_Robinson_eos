@@ -32,6 +32,9 @@ for i=1:4
     end
 end
 
+data_CO2_3D = reshape(data_CO2, [6, 6, 4]);
+data_drug_3D = reshape(data_drug, [6, 6, 4]);
+
 a_ij = zeros(4,6);
 for i=1:4
     for j=1:6
