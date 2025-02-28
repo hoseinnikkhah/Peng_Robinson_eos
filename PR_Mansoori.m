@@ -18,22 +18,31 @@ T_c_CO2 = 1149.5;                   % Critical Temp [K]
 P_c_CO2 = 10.57;                    % Critical Pressure [bar]
 omega_CO2 = 2.0964;
 
-data_CO2 = zeros(6,24);
-data_drug = zeros(6,24);
+data_CO2 = zeros(3,24);
+data_drug = zeros(3,24);
+
+data_CO2_cap = zeros(3,24);
+data_drug_cap = zeros(3,24);
+
 count = 1;
 
 for i=1:4
     for j=1:6
         [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_CO2,T(i),P(j),omega_CO2);
-        data_CO2(:, count) = [a; b; d; A; B; D];
+        data_CO2(:, count) = [a; b; d];
+        data_CO2_cap(:, count) = [A; B; D];
         [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_drug,T(i),P(j),omega_drug);
-        data_drug(:, count) = [a; b; d; A; B; D];
+        data_drug(:, count) = [a; b; d];
+        data_drug_cap(:, count) = [A; B; D];
         count = count + 1;
     end
 end
 
 data_CO2_3D = reshape(data_CO2, [6, 6, 4]);
 data_drug_3D = reshape(data_drug, [6, 6, 4]);
+
+data_CO2_3D_cap = reshape(data_CO2_cap, [6, 6, 4]);
+data_drug_3D_cap = reshape(data_drug_cap, [6, 6, 4]);
 
 a_ij = zeros(4,6);
 for i=1:4
