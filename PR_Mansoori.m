@@ -43,14 +43,14 @@ for i=1:4
     end
 end
 
-stack_3D = zeros(2, 4, 4);
+stack_3D = zeros(2, 1, 4);
 
 data_CO2_3D = reshape(data_CO2_cap, [3, 6, 4]);     % Checked and it works
 data_drug_3D = reshape(data_drug_cap, [3, 6, 4]);   % Checked and it works
 
 for i = 1:4  
-    stack_3D(1, :, i) = data_CO2(:, i); 
-    stack_3D(2, :, i) = data_drug(:, i);  
+    stack_3D(1, 1, i) = data_CO2(1, i); 
+    stack_3D(2, 1, i) = data_drug(1, i);  
 end
 
 a_ij = zeros(4,4);      % a is depended on temp only therefor we have only 4 differnt vlaue of this
