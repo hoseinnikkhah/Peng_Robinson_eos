@@ -28,26 +28,24 @@ count = 1;
 
 for i=1:4
     [a, b, d] = correlations(T_c_CO2,P_c_CO2,T(i),omega_CO2);
-    data_CO2(:, i) = [a; b; d];
+    data_CO2(:, i) = [a; b; d];                     % Checked and it works
     [a, b, d] = correlations(T_c_drug,P_c_drug,T(i),omega_drug);
-    data_drug(:, i) = [a; b; d];
+    data_drug(:, i) = [a; b; d];                    % Checked and it works
 end
 
 for i=1:4
     for j=1:6
         [A, B, D] = correlations_cap(T(i), P(j), data_CO2(1,i), data_CO2(2,i), data_CO2(3,i));
-        data_CO2_cap(:, count) = [A; B; D];
+        data_CO2_cap(:, count) = [A; B; D];         % Checked and it works
         [A, B, D] = correlations_cap(T(i), P(j), data_drug(1,i), data_drug(2,i), data_drug(3,i));
-        data_drug_cap(:, count) = [A; B; D];
+        data_drug_cap(:, count) = [A; B; D];        % Checked and it works
         count = count + 1;
     end
 end
 
-%data_CO2_3D = reshape(data_CO2, [3, 6, 4]);
-%data_drug_3D = reshape(data_drug, [3, 6, 4]);
 
-%data_CO2_3D_cap = reshape(data_CO2_cap, [3, 6, 4]);
-%data_drug_3D_cap = reshape(data_drug_cap, [3, 6, 4]);
+data_CO2_3D = reshape(data_CO2_cap, [3, 6, 4]);
+data_drug_3D = reshape(data_drug_cap, [3, 6, 4]);
 
 a_ij = zeros(4,6);
 %for i=1:4
