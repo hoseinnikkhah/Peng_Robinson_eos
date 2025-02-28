@@ -43,28 +43,48 @@ for i=1:4
     end
 end
 
-stack_3D = zeros(2, 1, 4);
+a_3D = zeros(2, 1, 4);
+b_3D = zeros(2, 1, 4);
+d_3D = zeros(2, 1, 4);
 
 data_CO2_3D = reshape(data_CO2_cap, [3, 6, 4]);     % Checked and it works
 data_drug_3D = reshape(data_drug_cap, [3, 6, 4]);   % Checked and it works
 
 for i = 1:4  
-    stack_3D(1, 1, i) = data_CO2(1, i); 
-    stack_3D(2, 1, i) = data_drug(1, i);  
+    a_3D(1, 1, i) = data_CO2(1, i); 
+    a_3D(2, 1, i) = data_drug(1, i);  
+    b_3D(1, 1, i) = data_CO2(2, i); 
+    b_3D(2, 1, i) = data_drug(2, i); 
+    d_3D(1, 1, i) = data_CO2(3, i); 
+    d_3D(2, 1, i) = data_drug(3, i); 
 end
 
 a_ij_3D = zeros(2, 2, 4);
+b_ij_3D = zeros(2, 2, 4);
+d_ij_3D = zeros(2, 2, 4);
+
 for temp=1:4
     for i=1:2
         for j=1:2
             if i == j
-                a_ij_3D(i,j,temp) = stack_3D(i,1,temp);
+                a_ij_3D(i,j,temp) = a_3D(i,1,temp);
             else
-                a_ij_3D(i,j,temp) = sqrt(stack_3D(i,1,temp)*stack_3D(j,1,temp))*(1-k_ij(1,temp));
+                a_ij_3D(i,j,temp) = sqrt(a_3D(i,1,temp)*a_3D(j,1,temp))*(1-k_ij(1,temp));
             end
         end
     end
 end
+
+for temp=1:4
+    for i=1:2
+        for j=1:2
+            b_ij_3D(i,j,temp) = 
+        end
+    end
+end
+
+
+
 
 a_ij = zeros(4,4);      % a is depended on temp only therefor we have only 4 differnt vlaue of this
 b_ij = zeros(4,4);
