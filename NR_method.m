@@ -1,5 +1,5 @@
 % Main script to solve cubic equation with varying initial guesses
-function solve_cubic_equation_varying_initial_guesses()
+function NR_method()
     % Run the Peng-Robinson EoS calculations
     run('PR_Mansoori.m');
     
