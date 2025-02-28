@@ -47,9 +47,10 @@ end
 data_CO2_3D = reshape(data_CO2_cap, [3, 6, 4]);     % Checked and it works
 data_drug_3D = reshape(data_drug_cap, [3, 6, 4]);   % Checked and it works
 
-a_ij = zeros(1,4);      % a is depended on temp only therefor we have only 4 differnt vlaue of this
-b_ij = zeros(1,4);
-d_ij = zeros(1,4);
+a_ij = zeros(4,4);      % a is depended on temp only therefor we have only 4 differnt vlaue of this
+b_ij = zeros(4,4);
+d_ij = zeros(4,4);
+
 
 for i=1:4
     a_ij(1,i) = sqrt(data_CO2(1,i)*data_drug(1,i))*(1-k_ij(1,i));
