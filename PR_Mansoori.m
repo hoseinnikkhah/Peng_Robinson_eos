@@ -69,26 +69,14 @@ for temp=1:4
             if i == j
                 a_ij_3D(i,j,temp) = a_3D(i,1,temp);
                 b_ij_3D(i,j,temp) = b_3D(i,1,temp);
+                d_ij_3D(i,j,temp) = d_3D(i,1,temp);
             else
                 a_ij_3D(i,j,temp) = sqrt(a_3D(i,1,temp)*a_3D(j,1,temp))*(1-k_ij(1,temp));
+                b_ij_3D(i,j,temp) = (b_3D(i,1,temp) + b_3D(j,1,temp))/2;
+                d_ij_3D(i,j,temp) = (d_3D(i,1,temp) + d_3D(j,1,temp))/2;
             end
         end
     end
-end
-
-
-
-
-
-a_ij = zeros(4,4);      % a is depended on temp only therefor we have only 4 differnt vlaue of this
-b_ij = zeros(4,4);
-d_ij = zeros(4,4);
-
-
-for i=1:4
-    a_ij(1,i) = sqrt(data_CO2(1,i)*data_drug(1,i))*(1-k_ij(1,i));
-    b_ij(1,i) = (data_CO2(2,i) + data_CO2(2,i))/2;
-    d_ij(1,i) = (data_CO2(3,i) + data_CO2(3,i))/2;
 end
 
 
