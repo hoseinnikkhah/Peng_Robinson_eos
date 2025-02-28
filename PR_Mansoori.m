@@ -26,9 +26,9 @@ data_drug_cap = zeros(3,24);
 
 count = 1;
 for i=1:4
-    [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_CO2,T(i),omega_CO2);
+    [a, b, d] = correlations(T_c_CO2,P_c_CO2,T(i),omega_CO2);
     data_CO2(:, i) = [a; b; d];
-    [a, b, d, A, B, D] = correlations(T_c_drug,P_c_drug,T(i),omega_drug);
+    [a, b, d] = correlations(T_c_drug,P_c_drug,T(i),omega_drug);
     data_drug(:, i) = [a; b; d];
 end
 %data_CO2_3D = reshape(data_CO2, [3, 6, 4]);
