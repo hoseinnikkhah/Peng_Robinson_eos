@@ -68,6 +68,7 @@ for temp=1:4
         for j=1:2
             if i == j
                 a_ij_3D(i,j,temp) = a_3D(i,1,temp);
+                b_ij_3D(i,j,temp) = b_3D(i,1,temp);
             else
                 a_ij_3D(i,j,temp) = sqrt(a_3D(i,1,temp)*a_3D(j,1,temp))*(1-k_ij(1,temp));
             end
@@ -75,13 +76,6 @@ for temp=1:4
     end
 end
 
-for temp=1:4
-    for i=1:2
-        for j=1:2
-            b_ij_3D(i,j,temp) = 
-        end
-    end
-end
 
 
 
