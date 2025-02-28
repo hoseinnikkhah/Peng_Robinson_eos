@@ -18,37 +18,30 @@ T_c_CO2 = 1149.5;                   % Critical Temp [K]
 P_c_CO2 = 10.57;                    % Critical Pressure [bar]
 omega_CO2 = 2.0964;
 
-data_CO2 = zeros(3,24);
-data_drug = zeros(3,24);
+data_CO2 = zeros(3,4);
+data_drug = zeros(3,4);
 
 data_CO2_cap = zeros(3,24);
 data_drug_cap = zeros(3,24);
 
 count = 1;
-
 for i=1:4
-    for j=1:6
-        [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_CO2,T(i),P(j),omega_CO2);
-        data_CO2(:, count) = [a; b; d];
-        data_CO2_cap(:, count) = [A; B; D];
-        [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_drug,T(i),P(j),omega_drug);
-        data_drug(:, count) = [a; b; d];
-        data_drug_cap(:, count) = [A; B; D];
-        count = count + 1;
-    end
+    [a, b, d, A, B, D] = correlations(T_c_CO2,P_c_CO2,T(i),omega_CO2);
+    data_CO2(:, i) = [a; b; d];
+    [a, b, d, A, B, D] = correlations(T_c_drug,P_c_drug,T(i),omega_drug);
+    data_drug(:, i) = [a; b; d];
 end
+%data_CO2_3D = reshape(data_CO2, [3, 6, 4]);
+%data_drug_3D = reshape(data_drug, [3, 6, 4]);
 
-data_CO2_3D = reshape(data_CO2, [3, 6, 4]);
-data_drug_3D = reshape(data_drug, [3, 6, 4]);
-
-data_CO2_3D_cap = reshape(data_CO2_cap, [3, 6, 4]);
-data_drug_3D_cap = reshape(data_drug_cap, [3, 6, 4]);
+%data_CO2_3D_cap = reshape(data_CO2_cap, [3, 6, 4]);
+%data_drug_3D_cap = reshape(data_drug_cap, [3, 6, 4]);
 
 a_ij = zeros(4,6);
-for i=1:4
-    for j=1:6
-        factor = 6*(i-1) + j;
-        a_ij(i,j) = sqrt(data_CO2(1,factor)*data_drug(1,factor))*k_ij(i);
-    end
-end
+%for i=1:4
+    %for j=1:6
+        %factor = 6*(i-1) + j;
+        %a_ij(i,j) = sqrt(data_CO2(1,factor)*data_drug(1,factor))*k_ij(i);
+    %end
+%end
 
