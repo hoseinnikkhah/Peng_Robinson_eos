@@ -53,14 +53,15 @@ for i = 1:4
     stack_3D(2, 1, i) = data_drug(1, i);  
 end
 
-a_ij_3D = zeros(4, 2, 4);
+a_ij_3D = zeros(2, 2, 4);
 for temp=1:4
     for i=1:2
         for j=1:2
             if i == j
                 a_ij_3D(i,j,temp) = sqrt(stack_3D(i,j,temp));
+            else
+                a_ij_3D(i,j,temp) = sqrt(stack_3D(i,j,temp))*(1-k_ij(1,temp));
             end
-            a_ij_3D(i,j,temp) = sqrt(stack_3D(i,j,temp))*(1-k_ij(1,temp));
         end
     end
 end
