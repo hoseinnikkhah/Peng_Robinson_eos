@@ -7,6 +7,16 @@ T = [308 318 328 338];              % Temp range
 P = [120 150 180 210 240 270];      % Pressure range
 k_ij = [0.103 0.117 0.126 0.134];   % Binary interaction parameter for PR/KM EoS
 
+k_ij_3D = zeros(1,4,4);
+k_ij_3D(1,2,1) = k_ij(1,1);
+k_ij_3D(1,2,2) = k_ij(1,2);
+k_ij_3D(1,2,3) = k_ij(1,3);
+k_ij_3D(1,2,4) = k_ij(1,4);
+
+k_ij_3D(1,3,1) = k_ij(1,1);
+k_ij_3D(1,3,2) = k_ij(1,2);
+k_ij_3D(1,3,3) = k_ij(1,3);
+k_ij_3D(1,3,4) = k_ij(1,4);
 
 % The thermodynamic properties of Ceftriaxone sodium
 T_c_drug = 304.18;                  % Critical Temp [K]
@@ -52,6 +62,8 @@ for i = 1:4
     stack_3D(1, 1, i) = data_CO2(1, i); 
     stack_3D(2, 1, i) = data_drug(1, i);  
 end
+
+
 
 a_ij = zeros(4,4);      % a is depended on temp only therefor we have only 4 differnt vlaue of this
 b_ij = zeros(4,4);
