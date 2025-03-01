@@ -110,7 +110,7 @@ function [root, iterations, convergence] = newton_raphson_cubic(initial_guess, m
         % Original function: f(z) = z^3 + coef_z2*z^2 + coef_z1*z + coef_z0
         f_z = z^3 + coef_z2*z^2 + coef_z1*z + coef_z0;
         
-        % Derivative: f'(z) = 3z^2 + 2*coef_z2*z + coef_z1
+        % Derivative: f_prime_z = 3z^2 + 2*coef_z2*z + coef_z1
         f_prime_z = 3*z^2 + 2*coef_z2*z + coef_z1;
         
         % Check if derivative is too close to zero
