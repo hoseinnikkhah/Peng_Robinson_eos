@@ -37,13 +37,13 @@ function NR_method()
         term_2 = y_1*(a_ij_3D(1,1,1) + a_ij_3D(2,1,1)) + y_2*(a_ij_3D(1,2,1) + a_ij_3D(2,2,1));
         term_3 = y_1*(d_ij_3D(1,1,1) + d_ij_3D(2,1,1)) + y_2*(d_ij_3D(1,2,1) + d_ij_3D(2,2,1));
 
-        tau = (a_m + R*T_fixed*d_m) - (2*sqrt(a_m*d_m*R*term_3)*(1/2 - (term_1/b_m))) + term_2*(1 - sqrt((R*T_fixed*d_m)/a_m)) + term_3*(R*T_fixed - sqrt((R*T_fixed*a_m)/d_m));
+        tau = (a_m + R*T_fixed*d_m) - (2*sqrt(a_m*d_m*R*T_fixed)*(1/2 - (term_1/b_m))) + term_2*(1 - sqrt((R*T_fixed*d_m)/a_m)) + term_3*(R*T_fixed - sqrt((R*T_fixed*a_m)/d_m));
         
-        coeff1 = (2*(y_1*(b_ij_3D(1,1,1) + b_ij_3D(2,1,1))) + (y_2*(b_ij_3D(1,2,1) + b_ij_3D(2,2,1))));
+        coeff1 = (2*(y_1*b_ij_3D(1,1,1)) + (y_2*b_ij_3D(1,2,1)));
         coeff2 = (Z + (1 + sqrt(2))*B)/(Z + (1 - sqrt(2))*B);
 
-        phi = (Z-1)((coeff1/b_m) - 1);
-        
+        phi = exp((Z-1)((coeff1/b_m) - 1) - log(Z - B) - (tau/(sqrt(2)*R*T_fixed*b_m))*log(coeff2));
+
         % Use Newton-Raphson to solve the cubic equation
         initial_guess = 0.5;  % You can adjust this starting value if needed
         max_iterations = 100;
