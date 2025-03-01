@@ -6,7 +6,7 @@ Mw_methanol = 32.04;
 T = [308 318 328 338];              % Temp range
 P = [120 150 180 210 240 270];      % Pressure range
 k_ij = [0.103 0.117 0.126 0.134];   % Binary interaction parameter for PR/KM EoS
-
+R = 8.314;
 
 % The thermodynamic properties of Ceftriaxone sodium
 T_c_drug = 304.18;                  % Critical Temp [K]
