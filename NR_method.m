@@ -33,6 +33,8 @@ function NR_method()
         % Calculate A, B, D parameters
         [A, B, D] = correlations_cap(T_fixed, P_fixed, a_m, b_m, d_m);
         
+        tau = a_m + R*T_fixed*d_m
+        
         % Use Newton-Raphson to solve the cubic equation
         initial_guess = 0.5;  % You can adjust this starting value if needed
         max_iterations = 100;
