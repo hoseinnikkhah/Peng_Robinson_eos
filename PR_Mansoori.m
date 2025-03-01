@@ -50,7 +50,7 @@ d_3D = zeros(2, 1, 4);
 data_CO2_3D = reshape(data_CO2_cap, [3, 6, 4]);     % Checked and it works
 data_drug_3D = reshape(data_drug_cap, [3, 6, 4]);   % Checked and it works
 
-for i = 1:4                                         % This holds "a" value of both drug and SC CO2, first one is for CO2 and second one is drug
+for i = 1:4                                         % Checked and it works
     a_3D(1, 1, i) = data_CO2(1, i); 
     a_3D(2, 1, i) = data_drug(1, i);  
     b_3D(1, 1, i) = data_CO2(2, i); 
@@ -84,4 +84,3 @@ end
 %for i=1:4
     %for j=1:6
         %factor = 6*(i-1) + j;
-
