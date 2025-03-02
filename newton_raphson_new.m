@@ -39,24 +39,82 @@ function newton_raphson_new()
       
         tau_values(i) = tau_1;
 
-        initial_guess = 0.2;
-        max_iterations = 100;
-        tolerance = 1e-10;
+        % Try multiple initial guesses to ensure we find a physically meaningful root
+        initial_guesses = [0.2, 0.5, 0.8]; % Try liquid-like, mid-range, and gas-like
+        valid_root = false;
+
+        for guess_idx = 1:length(initial_guesses)
+            initial_guess = initial_guesses(guess_idx);
+            max_iterations = 100;
+            tolerance = 1e-10;
+            
+            [root, iterations, converged] = newton_raphson_cubic(initial_guess, max_iterations, tolerance, A, B, D);
+            
+            % Check if this is a physically valid root
+            if converged && (root > B) && isfinite(root)
+                valid_root = true;
+                break;
+            end
+        end
         
-        [root, iterations, converged] = newton_raphson_cubic(initial_guess, max_iterations, tolerance, A, B, D);
+        if ~valid_root
+            fprintf('Warning: Could not find a valid root for y_1 = %.4f\n', y_1);
+            roots(i) = NaN;
+            phi_values(i) = NaN;
+            convergence_flags(i) = 0;
+            iteration_counts(i) = max_iterations;
+            continue;
+        }
         
         coeff1 = 2*(y_1*b_ij_3D(1,1,1) + y_2*b_ij_3D(1,2,1));
-        coeff2 = (root + (1 + sqrt(2))*B)/(root + (1 - sqrt(2))*B);
         
-        phi = exp((root-1)*((coeff1/b_m) - 1) - log(root - B) - (tau_1/(sqrt(2)*R*T_fixed*b_m))*log(coeff2));
+        % Protect against root being too close to B
+        if (root - B) < 1e-10
+            root = B + 1e-10;
+        end
+        
+        % Protect against denominator in coeff2 being too small
+        denom = root + (1 - sqrt(2))*B;
+        if abs(denom) < 1e-10
+            denom = sign(denom) * 1e-10;
+            if denom == 0
+                denom = 1e-10;
+            end
+        end
+        
+        coeff2 = (root + (1 + sqrt(2))*B)/denom;
+        
+        % Calculate ln(phi) first to check for overflow/underflow
+        term1 = (root-1)*((coeff1/b_m) - 1);
+        term2 = -log(root - B);
+        term3 = -(tau_1/(sqrt(2)*R*T_fixed*b_m))*log(coeff2);
+        
+        ln_phi = term1 + term2 + term3;
+        
+        % Handle extreme ln(phi) values to prevent overflow/underflow
+        if ln_phi < -700
+            phi = 0;
+            fprintf('Warning: ln(phi) too negative (%.2e) for y_1 = %.4f, setting phi = 0\n', ln_phi, y_1);
+        elseif ln_phi > 700
+            phi = Inf;
+            fprintf('Warning: ln(phi) too positive (%.2e) for y_1 = %.4f, setting phi = Inf\n', ln_phi, y_1);
+        else
+            phi = exp(ln_phi);
+        end
         
         roots(i) = root;
         phi_values(i) = phi;
         convergence_flags(i) = converged;
         iteration_counts(i) = iterations;
         
-        fprintf('y_1 = %.2f: Z = %.6f, phi = %.6e, Converged = %d, Iterations = %d\n', ...
-                y_1, root, phi, converged, iterations);
+        fprintf('y_1 = %.4f: Z = %.6f, phi = %.6e, ln(phi) = %.6e, Converged = %d, Iterations = %d\n', ...
+                y_1, root, phi, ln_phi, converged, iterations);
+        
+        % Add debugging for problematic cases
+        if phi == 0 || phi == Inf || isnan(phi)
+            fprintf('  Debug: term1 = %.6e, term2 = %.6e, term3 = %.6e\n', term1, term2, term3);
+            fprintf('  Debug: tau_1 = %.6e, coeff1/b_m = %.6e, coeff2 = %.6e\n', tau_1, coeff1/b_m, coeff2);
+        end
     end
     
     figure;
@@ -68,25 +126,22 @@ function newton_raphson_new()
     title('Compressibility Factor (Z) vs. Mole Fraction');
     
     subplot(3,1,2);
-    plot(initial_z_values, phi_values, 'g-', 'LineWidth', 2);
+    semilogy(initial_z_values, phi_values, 'g-', 'LineWidth', 2);
     grid on;
     xlabel('Mole Fraction (y_1)');
-    ylabel('Phi Value');
+    ylabel('Phi Value (log scale)');
     title('Fugacity Coefficient (Phi) vs. Mole Fraction');
     
     subplot(3,1,3);
-    plot(initial_z_values, iteration_counts, 'r-', 'LineWidth', 2);
+    plot(initial_z_values, tau_values, 'm-', 'LineWidth', 2);
     grid on;
     xlabel('Mole Fraction (y_1)');
-    ylabel('Iterations');
-    title('Convergence Iterations vs. Mole Fraction');
+    ylabel('Tau Value');
+    title('Tau vs. Mole Fraction');
     
     non_converged = find(convergence_flags == 0);
     if ~isempty(non_converged)
-        fprintf('\nWarning: Solution did not converge for the following mole fractions:\n');
-        for i = 1:length(non_converged)
-            fprintf('y_1 = %.2f\n', initial_z_values(non_converged(i)));
-        end
+        fprintf('\nWarning: Solution did not converge for %d mole fractions\n', length(non_converged));
     else
         fprintf('\nAll solutions converged successfully.\n');
     end
