@@ -1,7 +1,7 @@
 function newton_raphson_new()
     run('PR_Mansoori.m');
     
-    initial_z_values = 0:10^-4:1;
+    initial_z_values = 0:10^-6:1;
     num_initial_values = length(initial_z_values);
 
     roots = zeros(size(initial_z_values));
@@ -81,7 +81,7 @@ function newton_raphson_new()
             
             % If root is less than or equal to B, adjust it slightly
             if root <= B
-                root = B + 1e-6;  % Ensure we're slightly above B for log(Z-B)
+                root = B + 1e-6;  % Ensure we are slightly above B for log(Z-B)
                 fprintf('Warning: Using adjusted root (Z = %.6f) for y_1 = %.4f\n', root, y_1);
             end
             
