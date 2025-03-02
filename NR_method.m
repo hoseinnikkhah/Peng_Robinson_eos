@@ -4,7 +4,7 @@ function NR_method()
     run('PR_Mansoori.m');
     
     % Define the range of initial guesses (mole fractions)
-    initial_z_values = 0:0.01:1;
+    initial_z_values = 0:10^-7:10*10^-6;
     num_initial_values = length(initial_z_values);
     
     % Arrays to store results
