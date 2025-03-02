@@ -15,7 +15,7 @@ function newton_raphson_new()
     P_fixed = 120;
     
     % Parameters for calculating sublimation pressure
-    T_ref = 293;           % Reference temperature in K
+    T_ref = 304.18;        % Reference temperature in K
     P_ref = 1e-6;          % Reference pressure in bar (assumed very low for pharmaceutical compounds)
     delta_H_vap = 56910;   % Enthalpy of vaporization in J/mol (56.91 kJ/mol)
     R_gas = 8.314;         % Gas constant in J/(mol·K)
