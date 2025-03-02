@@ -10,6 +10,7 @@ function newton_raphson_new()
     convergence_flags = zeros(size(initial_z_values));
     iteration_counts = zeros(size(initial_z_values));
     calculated_y1_values = zeros(size(initial_z_values));
+    relative_differences = zeros(size(initial_z_values));
 
     T_fixed = 308;
     P_fixed = 120;
@@ -97,6 +98,7 @@ function newton_raphson_new()
             roots(i) = NaN;
             phi_values(i) = NaN;
             calculated_y1_values(i) = NaN;
+            relative_differences(i) = NaN;
             convergence_flags(i) = 0;
             iteration_counts(i) = max_iterations;
         else
@@ -135,10 +137,12 @@ function newton_raphson_new()
                 phi = 0;
                 fprintf('Warning: ln(phi) too negative (%.2e) for y_1 = %.4f, setting phi = 0\n', ln_phi, y_1);
                 calculated_y1_values(i) = NaN;  % Cannot calculate y_1 with phi = 0
+                relative_differences(i) = NaN;
             elseif ln_phi > 700
                 phi = Inf;
                 fprintf('Warning: ln(phi) too positive (%.2e) for y_1 = %.4f, setting phi = Inf\n', ln_phi, y_1);
                 calculated_y1_values(i) = NaN;  % Cannot calculate y_1 with phi = Inf
+                relative_differences(i) = NaN;
             else
                 phi = exp(ln_phi);
                 
@@ -152,6 +156,9 @@ function newton_raphson_new()
                 % Calculate new y_1
                 new_y_1 = (1 * P_sublimation * poynting_factor) / (P_fixed * phi);
                 calculated_y1_values(i) = new_y_1;
+                
+                % Calculate relative difference
+                relative_differences(i) = abs(initial_z_values(i) - new_y_1) / new_y_1;
             end
             
             roots(i) = root;
@@ -257,10 +264,27 @@ function newton_raphson_new()
     fprintf('Initial y_1 = %.6e, Calculated y_1 = %.6e, Relative Difference = %.6f%%\n', ...
             initial_z_values(best_match_idx), calculated_y1_values(best_match_idx), min_diff*100);
     
-    % Save results to CSV
-    results_table = table(initial_z_values', roots', phi_values', tau_values', calculated_y1_values', convergence_flags', iteration_counts', 'VariableNames', {'InitialMoleFraction', 'Z', 'Phi', 'Tau', 'CalculatedMoleFraction', 'Converged', 'Iterations'});
+    % Save all results to CSV
+    results_table = table(initial_z_values', roots', phi_values', tau_values', calculated_y1_values', relative_differences', convergence_flags', iteration_counts', ...
+                          'VariableNames', {'InitialMoleFraction', 'Z', 'Phi', 'Tau', 'CalculatedMoleFraction', 'RelativeDifference', 'Converged', 'Iterations'});
     writetable(results_table, 'fugacity_results.csv');
     fprintf('Results saved to fugacity_results.csv\n');
+    
+    % Create and save the new comparison table with only valid comparisons
+    pressure_column = P_fixed * ones(sum(valid_comparison_indices), 1);
+    temperature_column = T_fixed * ones(sum(valid_comparison_indices), 1);
+    
+    comparison_table = table(...
+        calculated_y1_values(valid_comparison_indices)', ...
+        initial_z_values(valid_comparison_indices)', ...
+        relative_differences(valid_comparison_indices)' * 100, ... % Convert to percentage
+        pressure_column, ...
+        temperature_column, ...
+        'VariableNames', {'CalculatedMoleFraction', 'InitialMoleFraction', 'RelativeDifferencePercent', 'Pressure', 'Temperature'});
+    
+    writetable(comparison_table, 'mole_fraction_comparison.csv');
+    fprintf('Comparison data saved to mole_fraction_comparison.csv\n');
+    %'
 end
 
 function [root, iterations, convergence] = newton_raphson_cubic(initial_guess, max_iter, tolerance, A, B, D)
