@@ -39,7 +39,7 @@ function newton_raphson_new()
       
         tau_values(i) = tau_1;
 
-        initial_guess = 0.1;
+        initial_guess = 0.01;
         max_iterations = 100;
         tolerance = 1e-10;
         
