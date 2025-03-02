@@ -238,6 +238,16 @@ function newton_raphson_new()
     title('Comparison of Initial vs. Calculated Mole Fractions');
     legend('Calculated y_1', 'y_1 = Initial y_1', 'Location', 'northwest');
     
+    figure(2); % Create figure 2
+    loglog(initial_z_values(valid_comparison_indices), calculated_y1_values(valid_comparison_indices), 'r-', 'LineWidth', 2);
+    hold on;
+    loglog(initial_z_values(valid_comparison_indices), initial_z_values(valid_comparison_indices), 'k--', 'LineWidth', 1);
+    grid on;
+    xlabel('Initial Mole Fraction (y_1)');
+    ylabel('Calculated Mole Fraction (y_1)');
+    title('Comparison of Initial vs. Calculated Mole Fractions');
+    legend('Calculated y_1', 'y_1 = Initial y_1', 'Location', 'northwest');
+
     % Additional analysis - find the initial y_1 value closest to its calculated value
     valid_idx = find(valid_comparison_indices);
     [min_diff, min_idx] = min(abs(initial_z_values(valid_comparison_indices) - calculated_y1_values(valid_comparison_indices)) ./ calculated_y1_values(valid_comparison_indices));
@@ -248,8 +258,7 @@ function newton_raphson_new()
             initial_z_values(best_match_idx), calculated_y1_values(best_match_idx), min_diff*100);
     
     % Save results to CSV
-    results_table = table(initial_z_values', roots', phi_values', tau_values', calculated_y1_values', convergence_flags', iteration_counts', ...
-                          'VariableNames', {'InitialMoleFraction', 'Z', 'Phi', 'Tau', 'CalculatedMoleFraction', 'Converged', 'Iterations'});
+    results_table = table(initial_z_values', roots', phi_values', tau_values', calculated_y1_values', convergence_flags', iteration_counts', 'VariableNames', {'InitialMoleFraction', 'Z', 'Phi', 'Tau', 'CalculatedMoleFraction', 'Converged', 'Iterations'});
     writetable(results_table, 'fugacity_results.csv');
     fprintf('Results saved to fugacity_results.csv\n');
 end
