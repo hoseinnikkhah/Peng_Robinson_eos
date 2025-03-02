@@ -9,23 +9,33 @@ function newton_raphson_new()
     tau_values = zeros(size(initial_z_values));
     convergence_flags = zeros(size(initial_z_values));
     iteration_counts = zeros(size(initial_z_values));
-    new_y1_values = zeros(size(initial_z_values));  % New array to store calculated y1 values
+    calculated_y1_values = zeros(size(initial_z_values));
 
     T_fixed = 308;
     P_fixed = 120;
     
-    % Parameters for solubility calculation
-    phi_saturated = 1.0;                % Assume saturation fugacity coefficient is 1
-    deltaH_sub = 56.91 * 1000;          % Enthalpy of sublimation in J/mol (converted from kJ/mol)
-    T_ref = 293;                        % Reference temperature in K
-    P_ref = 1e-10;                      % Reference pressure at T_ref (very small for pharmaceutical solids)
-    solid_density = 1.3;                % Estimated density of solid drug in g/cm³
-    v_solid = Mw_drug / (solid_density * 1000); % Molar volume in m³/kmol converted to cm³/mol
+    % Parameters for calculating sublimation pressure
+    T_ref = 293;           % Reference temperature in K
+    P_ref = 1e-6;          % Reference pressure in bar (assumed very low for pharmaceutical compounds)
+    delta_H_vap = 56910;   % Enthalpy of vaporization in J/mol (56.91 kJ/mol)
+    R_gas = 8.314;         % Gas constant in J/(mol·K)
     
     % Calculate sublimation pressure using Clausius-Clapeyron equation
-    P_sublimation = P_ref * exp((deltaH_sub/R) * (1/T_ref - 1/T_fixed));
-    fprintf('Calculated sublimation pressure: %.4e bar\n', P_sublimation);
-    fprintf('Calculated solid molar volume: %.4f cm³/mol\n', v_solid);
+    P_sublimation = P_ref * exp((delta_H_vap/R_gas)*(1/T_ref - 1/T_fixed));
+    fprintf('Calculated sublimation pressure at %d K: %.4e bar\n', T_fixed, P_sublimation);
+    
+    % Calculate solid molar volume (MW/density)
+    MW_drug = 598.5;       % Molecular weight of Ceftriaxone sodium in g/mol
+    density_solid = 1.5;   % Assumed density in g/cm³ (typical for pharmaceutical solids)
+    v_solid = MW_drug/density_solid; % Molar volume in cm³/mol
+    fprintf('Assumed solid molar volume: %.2f cm³/mol\n', v_solid);
+    
+    % Convert to m³/mol for calculation
+    v_solid_SI = v_solid * 1e-6; % Convert cm³/mol to m³/mol
+    
+    % Convert bar to Pa for calculation
+    P_fixed_Pa = P_fixed * 1e5;
+    P_sublimation_Pa = P_sublimation * 1e5;
 
     for i = 1:num_initial_values
         y_1 = initial_z_values(i);
@@ -86,9 +96,9 @@ function newton_raphson_new()
             fprintf('Warning: Could not find any valid root for y_1 = %.4f\n', y_1);
             roots(i) = NaN;
             phi_values(i) = NaN;
+            calculated_y1_values(i) = NaN;
             convergence_flags(i) = 0;
             iteration_counts(i) = max_iterations;
-            new_y1_values(i) = NaN;  % Cannot calculate a new y1 without a valid root
         else
             root = best_root;
             iterations = best_iterations;
@@ -124,18 +134,24 @@ function newton_raphson_new()
             if ln_phi < -700
                 phi = 0;
                 fprintf('Warning: ln(phi) too negative (%.2e) for y_1 = %.4f, setting phi = 0\n', ln_phi, y_1);
-                new_y1_values(i) = NaN;  % Cannot calculate a new y1 with phi = 0
+                calculated_y1_values(i) = NaN;  % Cannot calculate y_1 with phi = 0
             elseif ln_phi > 700
                 phi = Inf;
                 fprintf('Warning: ln(phi) too positive (%.2e) for y_1 = %.4f, setting phi = Inf\n', ln_phi, y_1);
-                new_y1_values(i) = NaN;  % Cannot calculate a new y1 with phi = Inf
+                calculated_y1_values(i) = NaN;  % Cannot calculate y_1 with phi = Inf
             else
                 phi = exp(ln_phi);
                 
-                % Calculate the new y1 value using the solubility equation
-                poynting_factor = exp((v_solid * (P_fixed - P_sublimation)) / (R * T_fixed));
-                new_y1 = (phi_saturated * P_sublimation * poynting_factor) / (P_fixed * phi);
-                new_y1_values(i) = new_y1;
+                % Now calculate y_1 using the formula:
+                % y_1 = (φ^Saturated_1 * P_1^Sublimation * exp[v_1^solid(P-P_1^Sublimation)/(RT)]) / (P * φ^supercritical_1)
+                % With φ^Saturated_1 = 1
+                
+                % Calculate Poynting factor
+                poynting_factor = exp((v_solid_SI * (P_fixed_Pa - P_sublimation_Pa)) / (R_gas * T_fixed));
+                
+                % Calculate new y_1
+                new_y_1 = (1 * P_sublimation * poynting_factor) / (P_fixed * phi);
+                calculated_y1_values(i) = new_y_1;
             end
             
             roots(i) = root;
@@ -143,8 +159,8 @@ function newton_raphson_new()
             convergence_flags(i) = converged;
             iteration_counts(i) = iterations;
             
-            fprintf('y_1 = %.4f: Z = %.6f, phi = %.6e, ln(phi) = %.6e, New y_1 = %.6e, Converged = %d\n', ...
-                    y_1, root, phi, ln_phi, new_y1_values(i), converged);
+            fprintf('y_1 = %.4f: Z = %.6f, phi = %.6e, ln(phi) = %.6e, Calculated y_1 = %.6e, Converged = %d\n', ...
+                    y_1, root, phi, ln_phi, calculated_y1_values(i), converged);
             
             % Add debugging for problematic cases
             if phi == 0 || phi == Inf || isnan(phi)
@@ -154,94 +170,86 @@ function newton_raphson_new()
         end
     end
     
-    % Compare original and calculated mole fractions
-    relative_diff = zeros(size(initial_z_values));
-    acceptable_range = 0.1;  % 10% relative difference threshold
-    
-    for i = 1:num_initial_values
-        if ~isnan(new_y1_values(i)) && initial_z_values(i) > 0
-            relative_diff(i) = abs(new_y1_values(i) - initial_z_values(i)) / initial_z_values(i);
-        else
-            relative_diff(i) = NaN;
-        end
-    end
-    
-    acceptable_indices = find(~isnan(relative_diff) & relative_diff <= acceptable_range);
-    
-    fprintf('\n--- Mole Fraction Comparison ---\n');
-    fprintf('Total number of valid calculations: %d\n', sum(~isnan(new_y1_values)));
-    fprintf('Number of mole fractions within %.0f%% of original estimate: %d\n', ...
-            acceptable_range*100, length(acceptable_indices));
-    
-    if ~isempty(acceptable_indices)
-        fprintf('\nMole fractions with acceptable agreement:\n');
-        fprintf('Original y_1  |  Calculated y_1  |  Relative Diff\n');
-        fprintf('------------------------------------------------\n');
-        
-        for i = 1:min(20, length(acceptable_indices))  % List up to 20 results
-            idx = acceptable_indices(i);
-            fprintf('  %.6e  |  %.6e  |  %.2f%%\n', ...
-                    initial_z_values(idx), new_y1_values(idx), relative_diff(idx)*100);
-        end
-        
-        if length(acceptable_indices) > 20
-            fprintf('... and %d more acceptable values\n', length(acceptable_indices)-20);
-        end
-    end
-    
     % Filter out any NaN values for plotting
     valid_indices = ~isnan(roots);
     
-    figure(1);
-    subplot(3,1,1);
+    % Compare initial y_1 values with calculated y_1 values
+    valid_comparison_indices = ~isnan(calculated_y1_values) & valid_indices;
+    
+    % Define an acceptable range for comparison (e.g., ±10%)
+    acceptable_range = 0.10;
+    
+    % Check which initial y_1 values are within acceptable range of calculated y_1 values
+    within_range = abs(initial_z_values(valid_comparison_indices) - calculated_y1_values(valid_comparison_indices)) ./ calculated_y1_values(valid_comparison_indices) <= acceptable_range;
+    
+    % Display the comparison results
+    fprintf('\n\nComparison of Initial y_1 and Calculated y_1 Values:\n');
+    fprintf('--------------------------------------------------------\n');
+    fprintf('| Initial y_1 | Calculated y_1 | Relative Difference | Within Range |\n');
+    fprintf('--------------------------------------------------------\n');
+    
+    idx_valid = find(valid_comparison_indices);
+    for j = 1:length(idx_valid)
+        i = idx_valid(j);
+        rel_diff = abs(initial_z_values(i) - calculated_y1_values(i)) / calculated_y1_values(i);
+        is_within = rel_diff <= acceptable_range;
+        fprintf('| %.6e | %.6e | %.6f%% | %5s |\n', ...
+                initial_z_values(i), calculated_y1_values(i), rel_diff*100, ...
+                conditional(is_within, 'Yes', 'No'));
+    end
+    
+    % Count how many initial values are within acceptable range
+    count_within_range = sum(within_range);
+    fprintf('\nOut of %d valid comparisons, %d (%.2f%%) are within ±%.0f%% of calculated values.\n', ...
+            sum(valid_comparison_indices), count_within_range, ...
+            (count_within_range/sum(valid_comparison_indices))*100, ...
+            acceptable_range*100);
+    
+    % Create plots
+    figure;
+    subplot(4,1,1);
     plot(initial_z_values(valid_indices), roots(valid_indices), 'b-', 'LineWidth', 2);
     grid on;
-    xlabel('Mole Fraction (y_1)');
+    xlabel('Initial Mole Fraction (y_1)');
     ylabel('Z Value');
     title('Compressibility Factor (Z) vs. Mole Fraction');
     
-    subplot(3,1,2);
+    subplot(4,1,2);
     semilogy(initial_z_values(valid_indices), phi_values(valid_indices), 'g-', 'LineWidth', 2);
     grid on;
-    xlabel('Mole Fraction (y_1)');
+    xlabel('Initial Mole Fraction (y_1)');
     ylabel('Phi Value (log scale)');
     title('Fugacity Coefficient (Phi) vs. Mole Fraction');
     
-    subplot(3,1,3);
+    subplot(4,1,3);
     plot(initial_z_values(valid_indices), tau_values(valid_indices), 'm-', 'LineWidth', 2);
     grid on;
-    xlabel('Mole Fraction (y_1)');
+    xlabel('Initial Mole Fraction (y_1)');
     ylabel('Tau Value');
     title('Tau vs. Mole Fraction');
     
-    % New plot comparing original vs calculated y1 values
-    valid_y1_indices = find(~isnan(new_y1_values));
-    if ~isempty(valid_y1_indices)
-        figure(2);
-        loglog(initial_z_values(valid_y1_indices), new_y1_values(valid_y1_indices), 'ro', 'LineWidth', 2);
-        hold on;
-        % Add 1:1 reference line
-        y1_min = min([initial_z_values(valid_y1_indices), new_y1_values(valid_y1_indices)]);
-        y1_max = max([initial_z_values(valid_y1_indices), new_y1_values(valid_y1_indices)]);
-        loglog([y1_min, y1_max], [y1_min, y1_max], 'k--', 'LineWidth', 1);
-        hold off;
-        grid on;
-        xlabel('Original Mole Fraction (y_1)');
-        ylabel('Calculated Mole Fraction (y_1)');
-        title('Comparison of Original vs Calculated Mole Fractions');
-        axis square;
-    end
+    subplot(4,1,4);
+    loglog(initial_z_values(valid_comparison_indices), calculated_y1_values(valid_comparison_indices), 'r-', 'LineWidth', 2);
+    hold on;
+    loglog(initial_z_values(valid_comparison_indices), initial_z_values(valid_comparison_indices), 'k--', 'LineWidth', 1);
+    grid on;
+    xlabel('Initial Mole Fraction (y_1)');
+    ylabel('Calculated Mole Fraction (y_1)');
+    title('Comparison of Initial vs. Calculated Mole Fractions');
+    legend('Calculated y_1', 'y_1 = Initial y_1', 'Location', 'northwest');
     
-    non_converged = find(convergence_flags == 0);
-    if ~isempty(non_converged)
-        fprintf('\nWarning: Solution did not converge for %d mole fractions\n', length(non_converged));
-    else
-        fprintf('\nAll solutions converged successfully.\n');
-    end
+    % Additional analysis - find the initial y_1 value closest to its calculated value
+    valid_idx = find(valid_comparison_indices);
+    [min_diff, min_idx] = min(abs(initial_z_values(valid_comparison_indices) - calculated_y1_values(valid_comparison_indices)) ./ calculated_y1_values(valid_comparison_indices));
+    best_match_idx = valid_idx(min_idx);
     
-    results_table = table(initial_z_values', roots', phi_values', tau_values', new_y1_values', ...
-                          convergence_flags', iteration_counts', ...
-                          'VariableNames', {'OriginalMoleFraction', 'Z', 'Phi', 'Tau', 'CalculatedMoleFraction', 'Converged', 'Iterations'});
+    fprintf('\nBest match between initial and calculated y_1:\n');
+    fprintf('Initial y_1 = %.6e, Calculated y_1 = %.6e, Relative Difference = %.6f%%\n', ...
+            initial_z_values(best_match_idx), calculated_y1_values(best_match_idx), min_diff*100);
+    
+    % Save results to CSV
+    results_table = table(initial_z_values', roots', phi_values', tau_values', calculated_y1_values', convergence_flags', iteration_counts', ...
+                          'VariableNames', {'InitialMoleFraction', 'Z', 'Phi', 'Tau', 'CalculatedMoleFraction', 'Converged', 'Iterations'});
     writetable(results_table, 'fugacity_results.csv');
     fprintf('Results saved to fugacity_results.csv\n');
 end
@@ -285,4 +293,12 @@ function [root, iterations, convergence] = newton_raphson_cubic(initial_guess, m
     end
     
     root = z;
+end
+
+function result = conditional(condition, true_value, false_value)
+    if condition
+        result = true_value;
+    else
+        result = false_value;
+    end
 end
