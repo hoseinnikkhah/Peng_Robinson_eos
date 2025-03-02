@@ -1,7 +1,7 @@
 function newton_raphson_new()
     run('PR_Mansoori.m');
     
-    initial_z_values = 0:10^-6:1;
+    initial_z_values = 0:10^-4:1;
     num_initial_values = length(initial_z_values);
 
     roots = zeros(size(initial_z_values));
