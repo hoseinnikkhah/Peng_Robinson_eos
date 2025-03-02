@@ -1,35 +1,34 @@
 function newton_raphson_new()
     run('PR_Mansoori.m');
     
-    % Constants and properties for Ceftriaxone sodium
-    MW_drug = 598.5;                % Molecular weight of Ceftriaxone sodium (g/mol)
-    rho_solid = 1.3;                % Approximate density of solid drug (g/cm³) - estimated
-    v_solid = (MW_drug/rho_solid)/1000;  % Molar volume of solid (m³/mol), converted to L/mol
+    initial_z_values = 0:10^-4:1;
+    num_initial_values = length(initial_z_values);
+
+    roots = zeros(size(initial_z_values));
+    phi_values = zeros(size(initial_z_values));
+    tau_values = zeros(size(initial_z_values));
+    convergence_flags = zeros(size(initial_z_values));
+    iteration_counts = zeros(size(initial_z_values));
+    new_y1_values = zeros(size(initial_z_values));  % New array to store calculated y1 values
+
+    T_fixed = 308;
+    P_fixed = 120;
     
-    % Parameters for sublimation pressure calculation
-    Delta_H_vap = 56.91 * 1000;     % Heat of vaporization (J/mol), converted from kJ/mol
-    T_ref = 293;                    % Reference temperature (K)
-    P_ref = 1e-10;                  % Reference pressure at T_ref (bar) - very low for pharmaceutical compounds
+    % Parameters for solubility calculation
+    phi_saturated = 1.0;                % Assume saturation fugacity coefficient is 1
+    deltaH_sub = 56.91 * 1000;          % Enthalpy of sublimation in J/mol (converted from kJ/mol)
+    T_ref = 293;                        % Reference temperature in K
+    P_ref = 1e-10;                      % Reference pressure at T_ref (very small for pharmaceutical solids)
+    solid_density = 1.3;                % Estimated density of solid drug in g/cm³
+    v_solid = Mw_drug / (solid_density * 1000); % Molar volume in m³/kmol converted to cm³/mol
     
-    % Settings
-    T_fixed = 308;                  % Fixed temperature for the test
-    P_range = 1:1:300;              % Pressure range (bar)
-    
-    % Arrays to store results
-    calculated_y = zeros(size(P_range));
-    Z_values = zeros(size(P_range));
-    phi_values = zeros(size(P_range));
-    
-    for idx = 1:length(P_range)
-        P_fixed = P_range(idx);
-        
-        % Calculate sublimation pressure at T_fixed using Clausius-Clapeyron equation
-        P_sub = P_ref * exp((Delta_H_vap/R) * ((1/T_ref) - (1/T_fixed)));
-        
-        % Initial guess for y_1
-        y_1 = 1e-6;  % Start with a very small value typical for drug solubility
-        
-        % Calculate mixture properties based on the guess
+    % Calculate sublimation pressure using Clausius-Clapeyron equation
+    P_sublimation = P_ref * exp((deltaH_sub/R) * (1/T_ref - 1/T_fixed));
+    fprintf('Calculated sublimation pressure: %.4e bar\n', P_sublimation);
+    fprintf('Calculated solid molar volume: %.4f cm³/mol\n', v_solid);
+
+    for i = 1:num_initial_values
+        y_1 = initial_z_values(i);
         y_2 = 1 - y_1;
 
         b_m = (y_1^2 * b_ij_3D(1,1,1)) + (2*y_1*y_2*b_ij_3D(1,2,1)) + (y_2^2 * b_ij_3D(2,2,1));
@@ -52,10 +51,13 @@ function newton_raphson_new()
 
         tau_1 = (a_m + R*T_fixed*d_m) - (2*sqrt(a_m*d_m*R*T_fixed)*(1/2 - (sum_y_b_1j/b_m))) + sum_y_a_1j*(1 - sqrt((R*T_fixed*d_m)/a_m)) + sum_y_d_1j*(R*T_fixed - sqrt((R*T_fixed*a_m)/d_m));
       
-        % Try multiple initial guesses to find a physically meaningful root
+        tau_values(i) = tau_1;
+
+        % Try multiple initial guesses to ensure we find a physically meaningful root
         initial_guesses = [0.2, 0.5, 0.8]; % Try liquid-like, mid-range, and gas-like
         best_root = NaN;
-        best_phi = NaN;
+        best_iterations = 0;
+        best_converged = false;
 
         for guess_idx = 1:length(initial_guesses)
             initial_guess = initial_guesses(guess_idx);
@@ -64,80 +66,184 @@ function newton_raphson_new()
             
             [root, iterations, converged] = newton_raphson_cubic(initial_guess, max_iterations, tolerance, A, B, D);
             
-            % Check if this is a valid root
-            if converged && isfinite(root) && root > B
-                best_root = root;
-                
-                % Calculate phi using the calculated root Z
-                coeff1 = 2*(y_1*b_ij_3D(1,1,1) + y_2*b_ij_3D(1,2,1));
-                
-                % Protect against denominator in coeff2 being too small
-                denom = root + (1 - sqrt(2))*B;
-                if abs(denom) < 1e-10
-                    denom = sign(denom) * 1e-10;
-                    if denom == 0
-                        denom = 1e-10;
-                    end
-                end
-                
-                coeff2 = (root + (1 + sqrt(2))*B)/denom;
-                
-                % Calculate ln(phi)
-                term1 = (root-1)*((coeff1/b_m) - 1);
-                term2 = -log(root - B);
-                term3 = -(tau_1/(sqrt(2)*R*T_fixed*b_m))*log(coeff2);
-                
-                ln_phi = term1 + term2 + term3;
-                
-                if ln_phi > -700 && ln_phi < 700  % Check for reasonable ln(phi) value
-                    best_phi = exp(ln_phi);
+            % Check if this is a valid root and store the best one
+            if converged && isfinite(root)
+                if root > B  % Physically meaningful root
+                    best_root = root;
+                    best_iterations = iterations;
+                    best_converged = converged;
                     break;  % We found a good root, no need to try more
+                elseif isnan(best_root)  % If we don't have any root yet
+                    best_root = root;
+                    best_iterations = iterations;
+                    best_converged = converged;
                 end
             end
         end
         
-        % Calculate the solubility using the thermodynamic relationship
-        if isfinite(best_root) && isfinite(best_phi) && best_phi > 0
-            % Assume phi_saturated = 1 (common assumption for pharmaceutical solids)
-            phi_saturated = 1.0;
-            
-            % Poynting factor
-            poynting_factor = exp(v_solid * (P_fixed - P_sub) / (R * T_fixed));
-            
-            % Calculate solubility
-            y_calculated = (phi_saturated * P_sub * poynting_factor) / (P_fixed * best_phi);
-            
-            % Store results
-            calculated_y(idx) = y_calculated;
-            Z_values(idx) = best_root;
-            phi_values(idx) = best_phi;
-            
-            fprintf('P = %d bar: Z = %.6f, phi = %.6e, y_calculated = %.6e\n', ...
-                    P_fixed, best_root, best_phi, y_calculated);
+        % Always use the best root found, even if it's not ideal
+        if isnan(best_root)
+            fprintf('Warning: Could not find any valid root for y_1 = %.4f\n', y_1);
+            roots(i) = NaN;
+            phi_values(i) = NaN;
+            convergence_flags(i) = 0;
+            iteration_counts(i) = max_iterations;
+            new_y1_values(i) = NaN;  % Cannot calculate a new y1 without a valid root
         else
-            fprintf('Warning: Could not find valid solution at P = %d bar\n', P_fixed);
-            calculated_y(idx) = NaN;
-            Z_values(idx) = NaN;
-            phi_values(idx) = NaN;
+            root = best_root;
+            iterations = best_iterations;
+            converged = best_converged;
+            
+            % If root is less than or equal to B, adjust it slightly
+            if root <= B
+                root = B + 1e-6;  % Ensure we are slightly above B for log(Z-B)
+                fprintf('Warning: Using adjusted root (Z = %.6f) for y_1 = %.4f\n', root, y_1);
+            end
+            
+            coeff1 = 2*(y_1*b_ij_3D(1,1,1) + y_2*b_ij_3D(1,2,1));
+            
+            % Protect against denominator in coeff2 being too small
+            denom = root + (1 - sqrt(2))*B;
+            if abs(denom) < 1e-10
+                denom = sign(denom) * 1e-10;
+                if denom == 0
+                    denom = 1e-10;
+                end
+            end
+            
+            coeff2 = (root + (1 + sqrt(2))*B)/denom;
+            
+            % Calculate ln(phi) first to check for overflow/underflow
+            term1 = (root-1)*((coeff1/b_m) - 1);
+            term2 = -log(root - B);
+            term3 = -(tau_1/(sqrt(2)*R*T_fixed*b_m))*log(coeff2);
+            
+            ln_phi = term1 + term2 + term3;
+            
+            % Handle extreme ln(phi) values to prevent overflow/underflow
+            if ln_phi < -700
+                phi = 0;
+                fprintf('Warning: ln(phi) too negative (%.2e) for y_1 = %.4f, setting phi = 0\n', ln_phi, y_1);
+                new_y1_values(i) = NaN;  % Cannot calculate a new y1 with phi = 0
+            elseif ln_phi > 700
+                phi = Inf;
+                fprintf('Warning: ln(phi) too positive (%.2e) for y_1 = %.4f, setting phi = Inf\n', ln_phi, y_1);
+                new_y1_values(i) = NaN;  % Cannot calculate a new y1 with phi = Inf
+            else
+                phi = exp(ln_phi);
+                
+                % Calculate the new y1 value using the solubility equation
+                poynting_factor = exp((v_solid * (P_fixed - P_sublimation)) / (R * T_fixed));
+                new_y1 = (phi_saturated * P_sublimation * poynting_factor) / (P_fixed * phi);
+                new_y1_values(i) = new_y1;
+            end
+            
+            roots(i) = root;
+            phi_values(i) = phi;
+            convergence_flags(i) = converged;
+            iteration_counts(i) = iterations;
+            
+            fprintf('y_1 = %.4f: Z = %.6f, phi = %.6e, ln(phi) = %.6e, New y_1 = %.6e, Converged = %d\n', ...
+                    y_1, root, phi, ln_phi, new_y1_values(i), converged);
+            
+            % Add debugging for problematic cases
+            if phi == 0 || phi == Inf || isnan(phi)
+                fprintf('  Debug: term1 = %.6e, term2 = %.6e, term3 = %.6e\n', term1, term2, term3);
+                fprintf('  Debug: tau_1 = %.6e, coeff1/b_m = %.6e, coeff2 = %.6e\n', tau_1, coeff1/b_m, coeff2);
+            end
+        end
+    end
+    
+    % Compare original and calculated mole fractions
+    relative_diff = zeros(size(initial_z_values));
+    acceptable_range = 0.1;  % 10% relative difference threshold
+    
+    for i = 1:num_initial_values
+        if ~isnan(new_y1_values(i)) && initial_z_values(i) > 0
+            relative_diff(i) = abs(new_y1_values(i) - initial_z_values(i)) / initial_z_values(i);
+        else
+            relative_diff(i) = NaN;
+        end
+    end
+    
+    acceptable_indices = find(~isnan(relative_diff) & relative_diff <= acceptable_range);
+    
+    fprintf('\n--- Mole Fraction Comparison ---\n');
+    fprintf('Total number of valid calculations: %d\n', sum(~isnan(new_y1_values)));
+    fprintf('Number of mole fractions within %.0f%% of original estimate: %d\n', ...
+            acceptable_range*100, length(acceptable_indices));
+    
+    if ~isempty(acceptable_indices)
+        fprintf('\nMole fractions with acceptable agreement:\n');
+        fprintf('Original y_1  |  Calculated y_1  |  Relative Diff\n');
+        fprintf('------------------------------------------------\n');
+        
+        for i = 1:min(20, length(acceptable_indices))  % List up to 20 results
+            idx = acceptable_indices(i);
+            fprintf('  %.6e  |  %.6e  |  %.2f%%\n', ...
+                    initial_z_values(idx), new_y1_values(idx), relative_diff(idx)*100);
+        end
+        
+        if length(acceptable_indices) > 20
+            fprintf('... and %d more acceptable values\n', length(acceptable_indices)-20);
         end
     end
     
     % Filter out any NaN values for plotting
-    valid_indices = ~isnan(calculated_y);
+    valid_indices = ~isnan(roots);
     
-    % Create a figure to match Figure 4 from the paper
-    figure;
-    plot(P_range(valid_indices), calculated_y(valid_indices) * 1e6, 'b-', 'LineWidth', 2);
+    figure(1);
+    subplot(3,1,1);
+    plot(initial_z_values(valid_indices), roots(valid_indices), 'b-', 'LineWidth', 2);
     grid on;
-    xlabel('Pressure (bar)');
-    ylabel('Drug Solubility (y × 10^6)');
-    title('Solubility of Ceftriaxone Sodium in SC-CO2 at T = 308 K');
+    xlabel('Mole Fraction (y_1)');
+    ylabel('Z Value');
+    title('Compressibility Factor (Z) vs. Mole Fraction');
     
-    % Save results to CSV
-    results_table = table(P_range', Z_values', phi_values', calculated_y', ...
-                          'VariableNames', {'Pressure', 'Z', 'Phi', 'Solubility'});
-    writetable(results_table, 'solubility_results.csv');
-    fprintf('Results saved to solubility_results.csv\n');
+    subplot(3,1,2);
+    semilogy(initial_z_values(valid_indices), phi_values(valid_indices), 'g-', 'LineWidth', 2);
+    grid on;
+    xlabel('Mole Fraction (y_1)');
+    ylabel('Phi Value (log scale)');
+    title('Fugacity Coefficient (Phi) vs. Mole Fraction');
+    
+    subplot(3,1,3);
+    plot(initial_z_values(valid_indices), tau_values(valid_indices), 'm-', 'LineWidth', 2);
+    grid on;
+    xlabel('Mole Fraction (y_1)');
+    ylabel('Tau Value');
+    title('Tau vs. Mole Fraction');
+    
+    % New plot comparing original vs calculated y1 values
+    valid_y1_indices = find(~isnan(new_y1_values));
+    if ~isempty(valid_y1_indices)
+        figure(2);
+        loglog(initial_z_values(valid_y1_indices), new_y1_values(valid_y1_indices), 'ro', 'LineWidth', 2);
+        hold on;
+        % Add 1:1 reference line
+        y1_min = min([initial_z_values(valid_y1_indices), new_y1_values(valid_y1_indices)]);
+        y1_max = max([initial_z_values(valid_y1_indices), new_y1_values(valid_y1_indices)]);
+        loglog([y1_min, y1_max], [y1_min, y1_max], 'k--', 'LineWidth', 1);
+        hold off;
+        grid on;
+        xlabel('Original Mole Fraction (y_1)');
+        ylabel('Calculated Mole Fraction (y_1)');
+        title('Comparison of Original vs Calculated Mole Fractions');
+        axis square;
+    end
+    
+    non_converged = find(convergence_flags == 0);
+    if ~isempty(non_converged)
+        fprintf('\nWarning: Solution did not converge for %d mole fractions\n', length(non_converged));
+    else
+        fprintf('\nAll solutions converged successfully.\n');
+    end
+    
+    results_table = table(initial_z_values', roots', phi_values', tau_values', new_y1_values', ...
+                          convergence_flags', iteration_counts', ...
+                          'VariableNames', {'OriginalMoleFraction', 'Z', 'Phi', 'Tau', 'CalculatedMoleFraction', 'Converged', 'Iterations'});
+    writetable(results_table, 'fugacity_results.csv');
+    fprintf('Results saved to fugacity_results.csv\n');
 end
 
 function [root, iterations, convergence] = newton_raphson_cubic(initial_guess, max_iter, tolerance, A, B, D)
