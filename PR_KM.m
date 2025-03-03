@@ -71,6 +71,9 @@ for n=1:4
         [A, B, D] = dimensionless_factor(mixing_correlations, P(count), T(n), n, i);
         ABD(:,i,n) = [A; B; D];
         count = count + 1;
+        if count == 301
+            break
+        end
     end
 end
 
