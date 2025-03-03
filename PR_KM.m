@@ -67,7 +67,7 @@ end
 ABD = zeros(3,length,4);
 for n=1:4
     for i=1:length
-        [A, B, D] = dimensionless_factor(mixing_correlations, P(i), T(n), i);
+        [A, B, D] = dimensionless_factor(mixing_correlations, P(i), T(n), n, i);
         ABD(:,i,n) = [A; B; D];
     end
 end
