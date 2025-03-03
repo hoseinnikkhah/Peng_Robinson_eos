@@ -1,7 +1,7 @@
 function PR_method_function(T_input, P_input)
     run('PR_Mansoori.m');
     
-    initial_z_values = 0:10^-4:1;
+    initial_z_values = 0:10^-5:1;
     num_initial_values = length(initial_z_values);
 
     roots = zeros(size(initial_z_values));
@@ -16,7 +16,7 @@ function PR_method_function(T_input, P_input)
     P_fixed = P_input;
     
     % Parameters for calculating sublimation pressure
-    T_ref = 509;        % Reference temperature in K
+    T_ref = 304.18;        % Reference temperature in K
     P_ref = 1e-6;       % Reference pressure in bar
     delta_H_vap = 56910;% Enthalpy of vaporization in J/mol (56.91 kJ/mol)
     R_gas = 8.314;      % Gas constant in J/(mol·K)
