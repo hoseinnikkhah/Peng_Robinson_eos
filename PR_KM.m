@@ -33,10 +33,21 @@ end
 % drug = 1 and CO2 = 2
 
 a_ij = zeros(2,2,4);
-
+b_ij = zeros(2,2,4);
+d_ij = zeros(2,2,4);
 for temp=1:4
     a_ij(1,1,temp) = correlations_drug(temp,1);
     a_ij(2,2,temp) = correlations_CO2(temp,1);
     a_ij(1,2,temp) = sqrt(correlations_drug(temp,1)*correlations_CO2(temp,1))*(1 - k_ij(1,temp));
     a_ij(2,1,temp) = sqrt(correlations_CO2(temp,1)*correlations_drug(temp,1))*(1 - k_ij(1,temp));
+
+    b_ij(1,1,temp) = correlations_drug(temp,2);
+    b_ij(2,2,temp) = correlations_CO2(temp,2);
+    b_ij(1,2,temp) = (correlations_drug(temp,2) + correlations_CO2(temp,2))/2;
+    b_ij(2,1,temp) = (correlations_CO2(temp,2) + correlations_drug(temp,2))/2;
+
+    d_ij(1,1,temp) = correlations_drug(temp,3);
+    d_ij(2,2,temp) = correlations_CO2(temp,3);
+    d_ij(1,2,temp) = (correlations_drug(temp,3) + correlations_CO2(temp,3))/2;
+    d_ij(2,1,temp) = (correlations_CO2(temp,3) + correlations_drug(temp,3))/2;
 end
