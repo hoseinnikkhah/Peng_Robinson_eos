@@ -28,10 +28,12 @@ for i=1:4
     correlations_drug(i,:) = [a,b,d];
 end
 
-%%% note that drug is 1 and SC CO2 is 2
-the
+% note that drug is 1 and SC CO2 is 2
+% therefor we need to combine them in a matrix
 
-%%%
+
 % a_ij calculations
+
 for temp=1:4
     a_ij = sqrt(correlations_CO2)
+end
