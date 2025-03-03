@@ -28,3 +28,10 @@ for i=1:4
     correlations_drug(i,:) = [a,b,d];
 end
 
+%%% note that drug is 1 and SC CO2 is 2
+the
+
+%%%
+% a_ij calculations
+for temp=1:4
+    a_ij = sqrt(correlations_CO2)
