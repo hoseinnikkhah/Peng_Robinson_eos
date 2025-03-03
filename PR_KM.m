@@ -22,7 +22,9 @@ correlations_CO2 = zeros(4,3);
 correlations_drug = zeros(4,3);
 
 for i=1:4
-    [a,b,d] = correlations[T_c_CO2, P_c_CO2; T(i); omega_CO2];
+    [a, b, d] = correlations(T_c_CO2, P_c_CO2, T(i), omega_CO2);
     correlations_CO2(i,:) = [a,b,d];
-    [a,b,d] = correlations[T_c_drug, P_c_drug; T(i); omega_CO2];
+    [a, b, d] = correlations(T_c_drug, P_c_drug, T(i), omega_CO2);
     correlations_drug(i,:) = [a,b,d];
+end
+
