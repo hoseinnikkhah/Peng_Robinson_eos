@@ -32,6 +32,8 @@ end
 % a_ij calculations
 % drug = 1 and CO2 = 2
 
+a_ij = zeros(2,2,4);
+
 for temp=1:4
     a_ij(1,1,temp) = correlations_drug(temp,1);
     a_ij(2,2,temp) = correlations_CO2(temp,1);
