@@ -64,11 +64,13 @@ for n=1:4
     end
 end
 
+count = 1;
 ABD = zeros(3,length,4);
 for n=1:4
     for i=1:length
-        [A, B, D] = dimensionless_factor(mixing_correlations, P(i), T(n), n, i);
+        [A, B, D] = dimensionless_factor(mixing_correlations, P(count), T(n), n, i);
         ABD(:,i,n) = [A; B; D];
+        count = count + 1;
     end
 end
 
