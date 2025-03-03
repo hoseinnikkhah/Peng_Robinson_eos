@@ -52,7 +52,7 @@ for temp=1:4
     d_ij(2,1,temp) = (correlations_CO2(temp,3) + correlations_drug(temp,3))/2;
 end
 
-y_1 = 0.1;
+y_1 = 0:10^-6:1;
 y_2 = 1 - y_1;
 
 mixing_correlations = zeros(3,4);
