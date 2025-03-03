@@ -1,0 +1,1 @@
+function [a, b, d] = mixing_rules(T_c, P_c, T, omega)
