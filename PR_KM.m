@@ -51,3 +51,12 @@ for temp=1:4
     d_ij(1,2,temp) = (correlations_drug(temp,3) + correlations_CO2(temp,3))/2;
     d_ij(2,1,temp) = (correlations_CO2(temp,3) + correlations_drug(temp,3))/2;
 end
+
+y_1 = 0.1;
+y_2 = 1 - y_1;
+
+mixing_correlations = zeros(3,4);
+for n=1:4
+    [a_mm, b_mm, d_mm] = mixing_rules(y_1, y_2, a_ij, b_ij, d_ij, n);
+    mixing_correlations(:,n) = [a_mm; b_mm; d_mm];
+end
