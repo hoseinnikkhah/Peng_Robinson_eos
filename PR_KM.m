@@ -54,25 +54,22 @@ end
 
 y_1 = 0:10^-8:0.999*10^-5;      % Drug mole fraction
 y_2 = 1 - y_1;                  % CO2 mole fraction
-length = length(y_1);
+mole_length = length(y_1);
 
-mixing_correlations = zeros(3,length,4);
+mixing_correlations = zeros(3,mole_length,4);
 for n=1:4
-    for i=1:length
+    for i=1:mole_length
         [a_mm, b_mm, d_mm] = mixing_rules(y_1(i), y_2(i), a_ij, b_ij, d_ij, n);
         mixing_correlations(:,i,n) = [a_mm; b_mm; d_mm];
     end
 end
 
 count = 1;
-ABD = zeros(3,length,4);
+ABD = zeros(3,mole_length,4);
 for n=1:4
-    for i=1:length
-        [A, B, D] = dimensionless_factor(mixing_correlations, P(count), T(n), n, i);
+    for i=1:mole_length
+        [A, B, D] = dimensionless_factor(mixing_correlations, P, T(n), n);
         ABD(:,i,n) = [A; B; D];
-        count = count + 1;
-        if count == 301
-            break
         end
     end
 end
