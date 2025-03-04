@@ -74,6 +74,9 @@ for n=1:4
     for p=1:300
         for i=1:mole_length
             [A, B, D] = dimensionless_factor(mixed(1,i,n), mixed(2,i,n), mixed(3,i,n), P(p), T(n));
+            if n == 1
+                ABD_308(:,i,p) = [A; B; D];
+            end
         end
     end
 end
