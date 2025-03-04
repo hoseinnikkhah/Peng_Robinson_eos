@@ -70,4 +70,10 @@ ABD_318 = zeros(3,mole_length,300);
 ABD_328 = zeros(3,mole_length,300);
 ABD_338 = zeros(3,mole_length,300);
 
+for n=1:4
+    for i=1:mole_length
+        [A, B, D] = dimensionless_factor(mixing_correlations(1,i,n), mixing_correlations(2,i,n), mixing_correlations(3,i,n), P, T(n), n);
+        ABD_308(:,i,n) = [A; B; D];
+    end
+end
 
