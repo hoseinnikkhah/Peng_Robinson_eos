@@ -65,12 +65,9 @@ for n=1:4
 end
 
 count = 1;
-ABD = zeros(3,mole_length,4);
-for n=1:4
-    for i=1:mole_length
-        [A, B, D] = dimensionless_factor(mixing_correlations, P, T(n), n);
-        ABD(:,i,n) = [A; B; D];
-        end
-    end
-end
+ABD_308 = zeros(3,mole_length,300);
+ABD_318 = zeros(3,mole_length,300);
+ABD_328 = zeros(3,mole_length,300);
+ABD_338 = zeros(3,mole_length,300);
+
 
