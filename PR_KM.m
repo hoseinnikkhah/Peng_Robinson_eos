@@ -76,6 +76,12 @@ for n=1:4
             [A, B, D] = dimensionless_factor(mixed(1,i,n), mixed(2,i,n), mixed(3,i,n), P(p), T(n));
             if n == 1
                 ABD_308(:,i,p) = [A; B; D];
+            elseif n == 2
+                ABD_318(:,i,p) = [A; B; D];
+            elseif n == 3
+                ABD_328(:,i,p) = [A; B; D];
+            elseif n == 4
+                ABD_338(:,i,p) = [A; B; D];                                
             end
         end
     end
