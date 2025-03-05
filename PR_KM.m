@@ -24,7 +24,7 @@ correlations_drug = zeros(4,3);
 for i=1:4
     [a, b, d] = correlations(T_c_CO2, P_c_CO2, T(i), omega_CO2);
     correlations_CO2(i,:) = [a,b,d];
-    [a, b, d] = correlations(T_c_drug, P_c_drug, T(i), omega_CO2);
+    [a, b, d] = correlations(T_c_drug, P_c_drug, T(i), omega_drug);
     correlations_drug(i,:) = [a,b,d];
 end
 
@@ -87,3 +87,14 @@ for n=1:4
     end
 end
 
+% at temp = 308
+for p=1:300
+    for i=1:mole_length
+        A = ABD_308(1,i,p);
+        B = ABD_308(2,i,p);
+        D = ABD_308(3,i,p);
+
+        C1 = 1;
+        C2 = B-1;
+        C3 = (D-3*B^2-2*B+A-2*sqrt(A*D));
+        C4 = (B^3+B^2-A*B-B*D+2*B*sqrt(A*D));
