@@ -64,7 +64,6 @@ for n=1:4
     end
 end
 
-% test
 count = 1;
 ABD_308 = zeros(3,mole_length,300);
 ABD_318 = zeros(3,mole_length,300);
@@ -138,5 +137,28 @@ for p=1:300
         end
         Z_roots_308(p,i) = Z;
 
+    end
+end
+
+% This tau calculations and storing process
+tau_308 = zeros(300,mole_length);
+tau_318 = zeros(300,mole_length);
+tau_328 = zeros(300,mole_length);
+tau_338 = zeros(300,mole_length);
+
+for temp = 1:4
+    for p=1:300
+        for i=1:mole_length
+            [tau] = tau_calculation(y_1(i), y_2(i), mixed(1,i,temp), mixed(2,i,temp), mixed(3,i,temp), a_ij(1,1,temp), a_ij(1,2,temp), b_ij(1,1,temp), b_ij(1,2,temp), d_ij(1,1,temp), d_ij(1,2,temp), temp);
+            if temp == 1
+                tau_308(p,i) = tau;
+            elseif temp == 2
+                tau_318(p,i) = tau;
+            elseif temp == 3
+                tau_328(p,i) = tau;
+            elseif temp == 4
+                tau_338(p,i) = tau;
+            end
+        end
     end
 end
