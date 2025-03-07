@@ -64,6 +64,7 @@ for n=1:4
     end
 end
 
+% test
 count = 1;
 ABD_308 = zeros(3,mole_length,300);
 ABD_318 = zeros(3,mole_length,300);
@@ -121,6 +122,19 @@ for p=1:300
             end
         else
             Z = max(real_roots(real_roots > B));
+        end
+
+        if p == 203 && i == 862
+            disp("All roots:");
+            disp(all_roots);
+            disp("Real roots:");
+            disp(real_roots);
+            disp("B value:");
+            disp(B);
+            disp("Valid roots (> B):");
+            disp(real_roots(real_roots > B));
+            disp("Selected Z:");
+            disp(Z);
         end
         Z_roots_308(p,i) = Z;
 
