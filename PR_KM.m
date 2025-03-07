@@ -89,54 +89,50 @@ end
 
 Z_roots_308 = zeros(300,mole_length);
 
-% at temp = 308
-for p=1:300
-    for i=1:mole_length
-        A = ABD_308(1,i,p);
-        B = ABD_308(2,i,p);
-        D = ABD_308(3,i,p);
+ABD_all = zeros(3,mole_length,300,4);
+ABD_all(:,:,:,1) = ABD_308;
+ABD_all(:,:,:,2) = ABD_318;
+ABD_all(:,:,:,3) = ABD_328;
+ABD_all(:,:,:,4) = ABD_338;
 
-        C1 = 1;
-        C2 = B-1;
-        C3 = (D-3*B^2-2*B+A-2*sqrt(A*D));
-        C4 = (B^3+B^2-A*B-B*D+2*B*sqrt(A*D));
+Z_roots_all = zeros(300,mole_length,4);
 
-        coefficients = [C1, C2, C3, C4];
-        all_roots = roots(coefficients);
+for temp=1:4
+    for p=1:300
+        for i=1:mole_length
+            A = ABD_all(1,i,p,temp);
+            B = ABD_all(2,i,p,temp);
+            D = ABD_all(3,i,p,temp);
 
-        real_roots = all_roots(abs(imag(all_roots)) < 1e-10);
-        real_roots = real(real_roots);
+            C1 = 1;
+            C2 = B-1;
+            C3 = (D-3*B^2-2*B+A-2*sqrt(A*D));
+            C4 = (B^3+B^2-A*B-B*D+2*B*sqrt(A*D));
 
-        if length(real_roots) == 1
-            Z = real_roots;
-        elseif length(real_roots) == 3
-            valid_roots = real_roots(real_roots > B);
+            coefficients = [C1, C2, C3, C4];
+            all_roots = roots(coefficients);
+
+            real_roots = all_roots(abs(imag(all_roots)) < 1e-10);
+            real_roots = real(real_roots);
+
+            if length(real_roots) == 1
+                Z = real_roots;
+            elseif length(real_roots) == 3
+                valid_roots = real_roots(real_roots > B);
     
-            if isempty(valid_roots)
-                Z = max(real_roots);
-            elseif length(valid_roots) == 1
-                Z = valid_roots;
+                if isempty(valid_roots)
+                    Z = max(real_roots);
+                elseif length(valid_roots) == 1
+                    Z = valid_roots;
+                else
+                    Z = max(valid_roots);
+                end
             else
-                Z = max(valid_roots);
+                Z = max(real_roots(real_roots > B));
             end
-        else
-            Z = max(real_roots(real_roots > B));
-        end
 
-        if p == 203 && i == 862
-            disp("All roots:");
-            disp(all_roots);
-            disp("Real roots:");
-            disp(real_roots);
-            disp("B value:");
-            disp(B);
-            disp("Valid roots (> B):");
-            disp(real_roots(real_roots > B));
-            disp("Selected Z:");
-            disp(Z);
+            Z_roots_all(p,i,temp) = Z;
         end
-        Z_roots_308(p,i) = Z;
-
     end
 end
 
