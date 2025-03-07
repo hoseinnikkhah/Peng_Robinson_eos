@@ -87,7 +87,7 @@ for n=1:4
     end
 end
 
-Z_roots_308 = zeros(300,mole_length);
+
 
 ABD_all = zeros(3,mole_length,300,4);
 ABD_all(:,:,:,1) = ABD_308;
