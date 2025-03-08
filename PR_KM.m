@@ -165,30 +165,13 @@ tau_all(:,:,2) = tau_318;
 tau_all(:,:,3) = tau_328;
 tau_all(:,:,4) = tau_338;
 
-% Initialize fugacity matrix with same dimensions as Z
-ln_phi_1 = zeros(300, mole_length, 4);
+phi = zeros(300,mole_length,4);
 
-for temp = 1:4
-    T_val = T(temp);  % Current temperature value
-    
-    for p = 1:300
-        for i = 1:mole_length
-            % Extract needed values from matrices
-            Z_val = Z_roots_all(p, i, temp);
-            B_val = ABD_all(2, i, p, temp);
-            tau_val = tau_all(p, i, temp);  
-            
-            % Calculate the b_m and sum(y_j*b_ij) for this condition
-            % You might have b_m already calculated, if not:
-            b_m = mixed(2, i, temp);  % Assuming this contains b_m values
-            
-            % Calculate sum(y_j*b_ij) - this might be similar to part of your tau calculation
-            sum_y_b = y_1(i) * b_ij(1, 1, temp) + y_2(i) * b_ij(1, 2, temp);
-            
-            % Calculate ln(phi)
-            ln_phi_1(p, i, temp) = (Z_val - 1) * (2 * sum_y_b / b_m - 1) - log(Z_val - B_val) ...
-                                  - (tau_val / (sqrt(2) * R * T_val * b_m)) ...
-                                  * log((Z_val + (1 + sqrt(2)) * B_val) / (Z_val + (1 - sqrt(2)) * B_val));
+for temp=1:4
+    for p=1:300
+        for i=1:mole_length
+            answer = phi_calculation(y_1(i), y_2(i), mixed(2,i,temp), T(temp), Z_roots_all(p,i,temp), ABD_all(2,i,p,n));
+            phi(p,i,n) = answer;
         end
     end
 end
