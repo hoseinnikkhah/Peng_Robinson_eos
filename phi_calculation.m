@@ -1,4 +1,4 @@
-function [phi] = phi_calculation(y_1, y_2, b_m, T, Z, B)
+function [phi] = phi_calculation(y_1, y_2, b_m, b_11, b_12, T, Z, B)
     R = 8.314;
 
     term1 = ((2*((y_1*b_11) + (y_2*b_12)))/b_m) - 1;
