@@ -170,8 +170,8 @@ phi = zeros(300,mole_length,4);
 for temp=1:4
     for p=1:300
         for i=1:mole_length
-            answer = phi_calculation(y_1(i), y_2(i), mixed(2,i,temp), T(temp), Z_roots_all(p,i,temp), ABD_all(2,i,p,n));
-            phi(p,i,n) = answer;
+            answer = phi_calculation(y_1(i), y_2(i), mixed(2,i,temp), b_ij(1,1,temp),b_ij(1,2,temp) T(temp), Z_roots_all(p,i,temp), ABD_all(2,i,p,n));
+            phi(p,i,temp) = answer;
         end
     end
 end
