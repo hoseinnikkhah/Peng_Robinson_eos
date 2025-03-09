@@ -176,6 +176,8 @@ for temp=1:4
     end
 end
 
+phi = log(phi);
+
 % PSub_1 calculations
 PSub_1 = zeros(1,4);
 deltaH_vap = 56.91;             % [kJ/mol]
