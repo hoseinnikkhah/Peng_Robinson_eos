@@ -192,3 +192,13 @@ rho_drug = 1.5; % [g/cm^3]
 vSolid_1 = Mw_drug/rho_drug;
 vSolid_1 = vSolid_1 * 10^6; % [m^3/mol]
 
+new_y_1 = zeros(300,1000,4);
+for temp 1:4
+    for p=1:300
+        for i=1:mole_length
+
+            EXP = (vSolid_1*(p-PSub_1(temp)))/(R*T(temp));
+            new_y_1 = ((phi_sat*PSub_1(temp))*exp(EXP))/(p*phi_sat);
+        end
+    end
+end
