@@ -231,16 +231,3 @@ for temp = 1:4
         extracted_indices{p, temp} = valid_indices;
     end
 end
-
-
-p_example = 238;
-temp_example = 1;
-valid_mole_fractions_at_p238_t1 = extracted_values{p_example, temp_example};
-
-fprintf('Number of valid values at each pressure for temperature 1:\n');
-for p = 1:300
-    num_values = length(extracted_values{p, 1});
-    if num_values > 0
-        fprintf('Pressure %d: %d valid values\n', p, num_values);
-    end
-end
