@@ -1,4 +1,4 @@
-function [true_y_1, initial_y_1] = difference(new_y_1, old_y_1, error)
+function [true_y_1] = difference(new_y_1, old_y_1, error)
     diff = new_y_1 - old_y_1;
     diff = abs(diff);  % You had a typo here: 'dif' should be 'diff'
     
@@ -16,9 +16,7 @@ function [true_y_1, initial_y_1] = difference(new_y_1, old_y_1, error)
 
     if relative <= error
         true_y_1 = new_y_1;
-        initial_y_1 = old_y_1;
     else
         true_y_1 = NaN;
-        initial_y_1 = NaN;
     end
 end
