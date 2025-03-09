@@ -186,3 +186,9 @@ for temp=1:4
     PSub_1(temp) = P_ref * exp((DeltaH_vap/R)*(1/T_ref - 1/T(temp)));
 end
 
+phi_sat = 1;
+
+rho_drug = 1.5; % [g/cm^3]
+vSolid_1 = Mw_drug/rho_drug;
+vSolid_1 = vSolid_1 * 10^6; % [m^3/mol]
+
