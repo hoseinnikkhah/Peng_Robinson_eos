@@ -7,5 +7,5 @@ function [phi] = phi_calculation(y_1, y_2, b_m, b_11, b_12, T, Z, B, tau)
     term4 = Z + (1 - sqrt(2))*B;
 
     ln_phi = (Z-1)*term1 - log(Z - B) - term2*log(term3/term4);
-    phi = exp(ln_phi);
+    phi = ln_phi;
 end
