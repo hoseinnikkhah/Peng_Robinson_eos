@@ -215,3 +215,32 @@ for temp=1:4
         end
     end
 end
+
+
+extracted_values = cell(300, 4);  % [pressure, temperature]
+extracted_indices = cell(300, 4); 
+
+
+for temp = 1:4
+    for p = 1:300
+        
+        valid_indices = find(~isnan(difference_matrix(p, :, temp)));
+        valid_values = difference_matrix(p, valid_indices, temp);
+        
+        extracted_values{p, temp} = valid_values;
+        extracted_indices{p, temp} = valid_indices;
+    end
+end
+
+
+p_example = 238;
+temp_example = 1;
+valid_mole_fractions_at_p238_t1 = extracted_values{p_example, temp_example};
+
+fprintf('Number of valid values at each pressure for temperature 1:\n');
+for p = 1:300
+    num_values = length(extracted_values{p, 1});
+    if num_values > 0
+        fprintf('Pressure %d: %d valid values\n', p, num_values);
+    end
+end
