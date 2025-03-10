@@ -23,29 +23,42 @@ rho_CO2 =   [769 817 849 875 896 914;
             661 744 791 824 851 872;
             509 656 725 769 802 829;
             388 557 652 710 751 783];               % Density [kg/m3]
-
+rho_range = linspace(340,940,100);
 % KJ Model info
 a_KJ = -2.4761;
-b_KJ = 5.2409*10^3;
+b_KJ = 5.2409*10^-3;
 c_KJ = -4550.5306;
 
 ln_y_KJ = zeros(4,6);
-
+ln_y_KJ_cT = zeros(4,6);
 for n=1:4
     for i=1:6
         ln_y_KJ(n,i) = a_KJ + b_KJ*rho_CO2(n,i) + c_KJ/T(n);
+        ln_y_KJ_cT(n,i) = ln_y_KJ(n,i) - c_KJ/T(n);
     end
 end
 
 figure(1);
 hold on;
-plot(rho_CO2(1,:),ln_y_KJ(1,:)/308);
-plot(rho_CO2(2,:),ln_y_KJ(2,:)/318);
-plot(rho_CO2(3,:),ln_y_KJ(3,:)/328);
-plot(rho_CO2(4,:),ln_y_KJ(4,:)/338);
+plot(rho_CO2(1,:),ln_y_KJ_cT(1,:));
+plot(rho_CO2(2,:),ln_y_KJ_cT(2,:));
+plot(rho_CO2(3,:),ln_y_KJ_cT(3,:));
+plot(rho_CO2(4,:),ln_y_KJ_cT(4,:));
+
+legend()
 xlabel('Density (kg/m^3)');
 ylabel('lny - c/T');
 
+figure(2);
+hold on;
+plot(rho_CO2(1,:),ln_y_KJ(1,:));
+plot(rho_CO2(2,:),ln_y_KJ(2,:));
+plot(rho_CO2(3,:),ln_y_KJ(3,:));
+plot(rho_CO2(4,:),ln_y_KJ(4,:));
+
+legend()
+xlabel('Density (kg/m^3)');
+ylabel('lny - c/T');
 % GM Model info
 a_GM = 1.8309;
 b_GM = -5710.4987;
