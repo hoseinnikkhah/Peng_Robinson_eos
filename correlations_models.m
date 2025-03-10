@@ -1,3 +1,4 @@
+clear;
 % SC CO2 Thermo info
 T_c_CO2 = 304.18;       % Critical Temp [Kelvin]
 P_c_CO2 = 73.8;         % Critical Pressure [bar]
