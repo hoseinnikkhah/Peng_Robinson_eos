@@ -19,42 +19,42 @@ Mw_CO2 = 44.01;
 Mw_methanol = 32.04;
 
 % KJ Model info
-a = -2.4761;
-b = 5.2409*10^3;
-c = -4550.5306;
+a_KJ = -2.4761;
+b_KJ = 5.2409*10^3;
+c_KJ = -4550.5306;
 
 % GM Model info
-a = 1.8309;
-b = -5710.4987;
-c = 3.8342;
+a_GM = 1.8309;
+b_GM = -5710.4987;
+c_GM = 3.8342;
 
 % Chrastil Model info
-a = 4.5889;
-b = -12.7501;
-c = -6759.0921;
+a_Chrastil = 4.5889;
+b_Chrastil = -12.7501;
+c_Chrastil = -6759.0921;
 
 % Bartle et al. Model info
-a = 13.2886;
-b = 9.0827;
-c = -6845.6966;
+a_Bartle = 13.2886;
+b_Bartle = 9.0827;
+c_Bartle = -6845.6966;
 
 % Sung-Shim Model info
-a = 5.7399;
-b = -606.0322;
-c = -447.5124;
-d = -36.8120;
+a_Sung = 5.7399;
+b_Sung = -606.0322;
+c_Sung = -447.5124;
+d_Sung = -36.8120;
 
 % Bian et al model info
-a = 4.2910;
-b = -4806.5989;
-c = 0.0355;
-d = -1.0456;
-e = -9.5861*10^4;
+a_Bian = 4.2910;
+b_Bian = -4806.5989;
+c_Bian = 0.0355;
+d_Bian = -1.0456;
+e_Bian = -9.5861*10^4;
 
 % Sodeifian model info
-a = 
-b = 
-c = 
-d = 
-e = 
-f = 
+a_Sodeifian = -16.8909;
+b_Sodeifian = -13.0866*10^3;
+c_Sodeifian = 1.4181;
+d_Sodeifian = 1.1071*10^3;
+e_Sodeifian = -2.9406*10^3;
+f_Sodeifian = -838.2700;
