@@ -165,18 +165,17 @@ tau_all(:,:,2) = tau_318;
 tau_all(:,:,3) = tau_328;
 tau_all(:,:,4) = tau_338;
 
-lnphi = zeros(300,mole_length,4);
+phi = zeros(300,mole_length,4);
 
 for temp=1:4
     for p=1:300
         for i=1:mole_length
-            answer = phi_calculation(y_1(i), y_2(i), mixed(2,i,temp), b_ij(1,1,temp), b_ij(1,2,temp), T(temp), Z_roots_all(p,i,temp), ABD_all(2,i,p,n), tau_all(p,i,temp));
-            lnphi(p,i,temp) = answer;
+            answer = phi_calculation(y_1(i), y_2(i), mixed(2,i,temp), b_ij(1,1,temp), b_ij(1,2,temp), T(temp), Z_roots_all(p,i,temp), ABD_all(2,i,p,temp), tau_all(p,i,temp));
+            phi(p,i,temp) = answer;
         end
     end
 end
 
-phi = exp(lnphi);
 
 % PSub_1 calculations
 PSub_1 = zeros(1,4);
