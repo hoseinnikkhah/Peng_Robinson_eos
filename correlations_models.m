@@ -18,10 +18,17 @@ Mw_drug = 598.5;
 Mw_CO2 = 44.01;
 Mw_methanol = 32.04;
 
+rho_CO2 =   [769 817 849 875 896 914;
+            661 744 791 824 851 872;
+            509 656 725 769 802 829;
+            388 557 652 710 751 783];               % Density [kg/m3]
+
 % KJ Model info
 a_KJ = -2.4761;
 b_KJ = 5.2409*10^3;
 c_KJ = -4550.5306;
+
+ln_y = a_KJ + b_KJ/T(i) c_KJ*rho_drug
 
 % GM Model info
 a_GM = 1.8309;
@@ -58,3 +65,4 @@ c_Sodeifian = 1.4181;
 d_Sodeifian = 1.1071*10^3;
 e_Sodeifian = -2.9406*10^3;
 f_Sodeifian = -838.2700;
+
