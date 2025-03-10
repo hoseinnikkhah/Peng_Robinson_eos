@@ -35,6 +35,15 @@ for n=1:4
     end
 end
 
+figure(1);
+hold on;
+plot(rho_CO2(1,:),ln_y_KJ(1,:));
+plot(rho_CO2(2,:),ln_y_KJ(2,:));
+plot(rho_CO2(3,:),ln_y_KJ(3,:));
+plot(rho_CO2(4,:),ln_y_KJ(4,:));
+xlabel('Density (kg/m^3)');
+ylabel('lny_{c}/T');
+
 % GM Model info
 a_GM = 1.8309;
 b_GM = -5710.4987;
