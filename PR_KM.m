@@ -52,8 +52,8 @@ for temp=1:4
     d_ij(2,1,temp) = (correlations_CO2(temp,3) + correlations_drug(temp,3))/2;
 end
 
-y_1 = 0:10^-8:0.999*10^-5;      % Drug mole fraction
-y_2 = 1 - y_1;                  % CO2 mole fraction
+y_1 = linspace(10^-8,10^-5,1000);      % Drug mole fraction
+y_2 = 1 - y_1;                         % CO2 mole fraction
 mole_length = length(y_1);
 
 mixed = zeros(3,mole_length,4);
@@ -64,7 +64,6 @@ for n=1:4
     end
 end
 
-count = 1;
 ABD_308 = zeros(3,mole_length,300);
 ABD_318 = zeros(3,mole_length,300);
 ABD_328 = zeros(3,mole_length,300);
