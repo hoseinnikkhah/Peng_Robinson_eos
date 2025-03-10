@@ -1,22 +1,20 @@
-function [true_y_1] = difference(new_y_1, old_y_1, error)
-    diff = new_y_1 - old_y_1;
-    diff = abs(diff);  % You had a typo here: 'dif' should be 'diff'
+function [true_value] = difference(new_y_1, old_y_1, error_threshold)
+    diff = abs(new_y_1 - old_y_1);
     
-    if abs(new_y_1) > abs(old_y_1)
-        base = abs(new_y_1);  % Added abs() to ensure positive base
-    else
-        base = abs(old_y_1);  % Added abs() to ensure positive base
-    end
+    % Determine base for relative difference
+    base = max(abs(new_y_1), abs(old_y_1));
     
+    % Handle division by zero
     if base == 0
-        relative = 0;  % If both values are zero, set relative difference to zero
+        relative = 0;
     else
-        relative = (diff/base)*100; 
+        relative = (diff/base)*100;
     end
-
-    if relative <= error
-        true_y_1 = new_y_1;
+    
+    % Return the value if it meets the error criterion, otherwise NaN
+    if relative <= error_threshold
+        true_value = new_y_1;
     else
-        true_y_1 = NaN;
+        true_value = NaN;
     end
 end
