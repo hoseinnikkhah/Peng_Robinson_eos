@@ -28,10 +28,10 @@ a_KJ = -2.4761;
 b_KJ = 5.2409*10^3;
 c_KJ = -4550.5306;
 
-ln_y_KJ = zeros(4,6)
+ln_y_KJ = zeros(4,6);
 for n=1:4
     for i=1:6
-        ln_y_KJ = a_KJ + b_KJ*rho_CO2(n,i) + c_KJ/T(n);
+        ln_y_KJ(n,i) = a_KJ + b_KJ*rho_CO2(n,i) + c_KJ/T(n);
     end
 end
 
