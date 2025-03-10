@@ -32,7 +32,8 @@ ln_y_KJ = zeros(4,6)
 for n=1:4
     for i=1:6
         ln_y_KJ = a_KJ + b_KJ*rho_CO2(n,i) + c_KJ/T(n);
-        
+    end
+end
 
 % GM Model info
 a_GM = 1.8309;
