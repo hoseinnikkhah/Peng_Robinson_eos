@@ -176,7 +176,7 @@ for temp=1:4
     end
 end
 
-phi = log(phi);
+phi = exp(phi);
 
 % PSub_1 calculations
 PSub_1 = zeros(1,4);
