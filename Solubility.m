@@ -28,6 +28,30 @@ end
 % S = S*100;
 % C_drug = [0.021 0.026 0.029 0.039 0.046 0.066];     % solubility or concentration [g/L]
 
+
+% KJ Model info
+a_KJ = -2.4761;
+b_KJ = 5.2409*10^3;
+c_KJ = -4550.5306;
+
+ln_y_KJ = zeros(4,6);
+
+for n=1:4
+    for i=1:6
+        ln_y_KJ(n,i) = a_KJ + b_KJ*rho_CO2(n,i) + c_KJ/T(n);
+    end
+end
+
+figure(1);
+hold on;
+plot(rho_CO2(1,:),ln_y_KJ(1,:)/308);
+plot(rho_CO2(2,:),ln_y_KJ(2,:)/318);
+plot(rho_CO2(3,:),ln_y_KJ(3,:)/328);
+plot(rho_CO2(4,:),ln_y_KJ(4,:)/338);
+xlabel('Density (kg/m^3)');
+ylabel('lny - c/T');
+
+
 figure(1);
 hold on;
 scatter(P, S(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');  
