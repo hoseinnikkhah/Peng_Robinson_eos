@@ -209,7 +209,7 @@ difference_matrix = zeros(300,mole_length,4);
 for temp=1:4
     for p=1:300
         for i=1:mole_length
-            true_value = difference(new_y_1(p,i,temp), y_1(i), 60);
+            true_value = difference(new_y_1(p,i,temp), y_1(i), 100);
             difference_matrix(p,i,temp) = true_value;
         end
     end
