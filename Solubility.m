@@ -139,10 +139,13 @@ c_Chrastil = -6759.0921;
 lnS = zeros(4,6);
 lnS_cT = zeros(4,6);
 ln_rho = log(rho_CO2);
+lnS_exp = log(S);
+lnS_exp_cT = zeros(4,6);
 for n=1:4
     for i=1:6
         lnS(n,i) = a_Chrastil*log(rho_CO2(n,i)) + b_Chrastil + c_Chrastil/T(n);
         lnS_cT(n,i) = lnS(n,i) - c_Chrastil/T(n);
+        lnS_exp_cT (n,i) = lnS_exp (n,i) - c_Chrastil/T(n);
     end
 end
 
