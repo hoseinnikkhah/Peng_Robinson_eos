@@ -196,6 +196,30 @@ for n=1:4
 end
 
 figure(4);
+hold on;
+
+% Plot lines
+plot(ln_rho(1,:), ln_y_Sung_cT(1,:), 'DisplayName', '308 K');
+plot(ln_rho(2,:), ln_y_Sung_cT(2,:), 'DisplayName', '318 K');
+plot(ln_rho(3,:), ln_y_Sung_cT(3,:), 'DisplayName', '328 K');
+plot(ln_rho(4,:), ln_y_Sung_cT(4,:), 'DisplayName', '338 K');
+
+% Scatter points
+scatter(ln_rho(1,:), ln_y_exp_ct(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
+scatter(ln_rho(2,:), ln_y_exp_ct(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
+scatter(ln_rho(3,:), ln_y_exp_ct(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
+scatter(ln_rho(4,:), ln_y_exp_ct(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
+
+xlabel('Density (kg/m^3)');
+ylabel('lny - c/T');
+
+legend('Location', 'best');
+title('Sung-Shim Model vs Exp');
+
+
+
+
+figure(5);
 % Subplot 1: Solubility vs. Pressure (S)
 subplot(2,2,1);
 hold on;
