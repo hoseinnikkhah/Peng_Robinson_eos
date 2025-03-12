@@ -45,7 +45,7 @@ for n=1:4
         ln_y_b_cT(n,i) = log(y_b(n,i)) + c_KJ/T(n);
     end
 end
-
+ln_y_b_cT = -1*ln_y_b_cT;
 figure(1);
 hold on;
 plot(rho_CO2(1,:),ln_y_KJ_cT(1,:));
