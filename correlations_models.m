@@ -166,6 +166,38 @@ b_Sung = -606.0322;
 c_Sung = -447.5124;
 d_Sung = -36.8120;
 
+ln_y_Sung = zeros(4,6);
+ln_y_Sung_cT = zeros(4,6);
+ln_y_exp_ct = zeros(4,6);
+for n=1:4
+    for i=1:6
+    ln_y_Sung(n,i) = (a_Sung + (b_Sung/T(n)))*(log(rho_CO2(n,i))) + (c_Sung/T(n)) + d_Sung;
+    ln_y_Sung_cT(n,i) = ln_y_Sung(n,i) - ((c_Sung/T(n)) + d_Sung);
+    ln_y_exp_ct(n,i) = ln_y_a(n,i) - ((c_Sung/T(n)) + d_Sung);
+    end
+end
+
+figure(4);
+hold on;
+
+% Plot lines
+plot(ln_rho(1,:), ln_y_Sung_cT(1,:), 'DisplayName', '308 K');
+plot(ln_rho(2,:), ln_y_Sung_cT(2,:), 'DisplayName', '318 K');
+plot(ln_rho(3,:), ln_y_Sung_cT(3,:), 'DisplayName', '328 K');
+plot(ln_rho(4,:), ln_y_Sung_cT(4,:), 'DisplayName', '338 K');
+
+% Scatter points
+scatter(ln_rho(1,:), ln_y_exp_ct(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
+scatter(ln_rho(2,:), ln_y_exp_ct(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
+scatter(ln_rho(3,:), ln_y_exp_ct(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
+scatter(ln_rho(4,:), ln_y_exp_ct(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
+
+xlabel('Density (kg/m^3)');
+ylabel('lny - c/T');
+
+legend('Location', 'best');
+title('Sung-Shim Model vs Exp');
+
 % Bian et al model info
 a_Bian = 4.2910;
 b_Bian = -4806.5989;
