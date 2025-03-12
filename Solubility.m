@@ -234,7 +234,6 @@ end
 % there is something wrong here
 y_Bian = exp(ln_y_Bian);
 
-% Sodeifian model info
 a_Sodeifian = -16.8909;
 b_Sodeifian = -13.0866*10^-3;
 c_Sodeifian = 1.4181;
@@ -261,14 +260,15 @@ y_sod = y_sod + sod_fix;
 figure(5);
 hold on;
 
-% Plot lines
-plot(rho_CO2(1,:), y_sod(1,:), 'DisplayName', '308 K');
-plot(rho_CO2(2,:), y_sod(2,:), 'DisplayName', '318 K');
-plot(rho_CO2(3,:), y_sod(3,:), 'DisplayName', '328 K');
-plot(rho_CO2(4,:), y_sod(4,:), 'DisplayName', '338 K');
+colors = {'r', 'g', 'b', 'm'};
+temps = {'308 K', '318 K', '328 K', '338 K'};
 
+for n=1:4
+    rho_fine = linspace(min(rho_CO2(n,:)), max(rho_CO2(n,:)), 100);
+    y_sod_smooth = pchip(rho_CO2(n,:), y_sod(n,:), rho_fine);
+    plot(rho_fine, y_sod_smooth, [colors{n}, '-'], 'LineWidth', 1.5, 'DisplayName', temps{n});
+end
 
-% Scatter points
 scatter(rho_CO2(1,:), y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
 scatter(rho_CO2(2,:), y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
 scatter(rho_CO2(3,:), y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
