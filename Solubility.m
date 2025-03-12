@@ -248,8 +248,17 @@ for n=1:4
         lnY_Sod(n,i) = a_Sodeifian + b_Sodeifian*((P(i)^2)/T(n)) + c_Sodeifian*log(rho_CO2(n,i)*T(n)) + d_Sodeifian*rho_CO2(n,i)*log(rho_CO2(n,i)) + e_Sodeifian*P(i)*log(T(n)) + f_Sodeifian*(log(rho_CO2(n,i))/T(n));
     end
 end
-
+y_sod = exp(lnY_Sod);
 figure(5);
+hold on;
+
+% Plot lines
+plot(ln_rho(1,:), y_sod(1,:), 'DisplayName', '308 K');
+plot(ln_rho(2,:), y_sod(2,:), 'DisplayName', '318 K');
+plot(ln_rho(3,:), y_sod(3,:), 'DisplayName', '328 K');
+plot(ln_rho(4,:), y_sod(4,:), 'DisplayName', '338 K');
+
+figure(6);
 % Subplot 1: Solubility vs. Pressure (S)
 subplot(2,2,1);
 hold on;
