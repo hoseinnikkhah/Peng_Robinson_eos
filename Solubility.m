@@ -228,7 +228,7 @@ e_Bian = -9.5861*10^4;
 ln_y_Bian = zeros(4,6);
 for n=1:4
     for i=1:6
-        ln_y_Bian(n,i) = a_Bian + (b_Bian/T(n)) + ((c_Bian*rho_CO2(n,i))/T(n)) + (d_Bian + e_Bian*rho_CO2(n,i))*log(rho_CO2(n,i);)
+        ln_y_Bian(n,i) = a_Bian + (b_Bian/T(n)) + ((c_Bian*rho_CO2(n,i))/T(n)) + (d_Bian + e_Bian*rho_CO2(n,i))*log(rho_CO2(n,i));
     end
 end
 
