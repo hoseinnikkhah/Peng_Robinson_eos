@@ -37,7 +37,7 @@ c_KJ = -4550.5306;
 
 ln_y_KJ = zeros(4,6);
 ln_y_KJ_cT = zeros(4,6);
-ln_y_b_cT = zeros(4,6);
+ln_y_b = log(y_b);
 for n=1:4
     for i=1:6
         ln_y_KJ(n,i) = a_KJ + b_KJ*rho_CO2(n,i) + c_KJ/T(n);
@@ -53,7 +53,10 @@ plot(rho_CO2(2,:),ln_y_KJ_cT(2,:));
 plot(rho_CO2(3,:),ln_y_KJ_cT(3,:));
 plot(rho_CO2(4,:),ln_y_KJ_cT(4,:));
 
-
+scatter(rho_CO2(1,:),ln_y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
+scatter(rho_CO2(2,:),ln_y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');
+scatter(rho_CO2(3,:),ln_y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');
+scatter(rho_CO2(4,:),ln_y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');
 
 legend()
 xlabel('Density (kg/m^3)');
