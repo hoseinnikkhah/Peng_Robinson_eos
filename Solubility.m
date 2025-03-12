@@ -261,17 +261,12 @@ y_sod = y_sod + sod_fix;
 figure(5);
 hold on;
 
-% Plot smooth lines
-x_fine = linspace(min(rho_CO2(1,:)), max(rho_CO2(1,:)), 1000);
-y_sod_fine1 = interp1(rho_CO2(1,:), y_sod(1,:), x_fine, 'spline');
-y_sod_fine2 = interp1(rho_CO2(2,:), y_sod(2,:), x_fine, 'spline');
-y_sod_fine3 = interp1(rho_CO2(3,:), y_sod(3,:), x_fine, 'spline');
-y_sod_fine4 = interp1(rho_CO2(4,:), y_sod(4,:), x_fine, 'spline');
+% Plot lines
+plot(rho_CO2(1,:), y_sod(1,:), 'DisplayName', '308 K');
+plot(rho_CO2(2,:), y_sod(2,:), 'DisplayName', '318 K');
+plot(rho_CO2(3,:), y_sod(3,:), 'DisplayName', '328 K');
+plot(rho_CO2(4,:), y_sod(4,:), 'DisplayName', '338 K');
 
-plot(x_fine, y_sod_fine1, 'DisplayName', '308 K');
-plot(x_fine, y_sod_fine2, 'DisplayName', '318 K');
-plot(x_fine, y_sod_fine3, 'DisplayName', '328 K');
-plot(x_fine, y_sod_fine4, 'DisplayName', '338 K');
 
 % Scatter points
 scatter(rho_CO2(1,:), y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
