@@ -29,7 +29,8 @@ y_b =   [2.03 2.32 2.48 3.33 3.80 5.32;
         1.29 1.96 3.76 4.08 5.36 7.22;
         0.90 1.52 4.39 4.94 6.10 8.01];        % mole fraction
 
-y_b_6 = y_b/10^6;
+
+
 ln_y_b = log(y_b);
 
 % KJ Model info
@@ -74,13 +75,14 @@ title('KJ model vs Exp');
 % GM Model info
 a_GM = 1.8309;
 b_GM = -5710.4987;
-c_GM = [0.29142,0.24342,0.20242,0.1598]*10;
+c_GM = [0.29142,0.24342,0.20242,0.1598];
 
 
 ln_y_GM = zeros(4,6);
 ln_y_GM_bT = zeros(4,6);
 ln_rho_T = zeros(4,6);
-
+y_b_6 = y_b/10^6;
+ln_y_b_6 = log(y_b_6);
 ln_y_b_GM = zeros(4,6);
 
 for n=1:4
@@ -89,7 +91,7 @@ for n=1:4
         ln_y_GM_bT(n,i) = ln_y_GM(n,i) - b_GM/T(n);
         ln_rho_T(n,i) = log(rho_CO2(n,i)*T(n));
 
-        ln_y_b_GM(n,i) = log(y_b_6(n,i)) - b_GM/T(n);
+        ln_y_b_GM(n,i) = ln_y_b_6(n,i) - b_GM/T(n);
     end
 end
 
