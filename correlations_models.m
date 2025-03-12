@@ -48,19 +48,26 @@ end
 
 figure(1);
 hold on;
-plot(rho_CO2(1,:),ln_y_KJ_cT(1,:));
-plot(rho_CO2(2,:),ln_y_KJ_cT(2,:));
-plot(rho_CO2(3,:),ln_y_KJ_cT(3,:));
-plot(rho_CO2(4,:),ln_y_KJ_cT(4,:));
 
-scatter(rho_CO2(1,:),ln_y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
-scatter(rho_CO2(2,:),ln_y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');
-scatter(rho_CO2(3,:),ln_y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');
-scatter(rho_CO2(4,:),ln_y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');
+% Plot lines
+plot(rho_CO2(1,:), ln_y_KJ_cT(1,:), 'DisplayName', '308 K');
+plot(rho_CO2(2,:), ln_y_KJ_cT(2,:), 'DisplayName', '318 K');
+plot(rho_CO2(3,:), ln_y_KJ_cT(3,:), 'DisplayName', '328 K');
+plot(rho_CO2(4,:), ln_y_KJ_cT(4,:), 'DisplayName', '338 K');
 
-legend()
+% Scatter points
+scatter(rho_CO2(1,:), ln_y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
+scatter(rho_CO2(2,:), ln_y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
+scatter(rho_CO2(3,:), ln_y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
+scatter(rho_CO2(4,:), ln_y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
+
+% Axis labels
 xlabel('Density (kg/m^3)');
 ylabel('lny - c/T');
+
+% Add legend
+legend('Location', 'best');
+
 
 % GM Model info
 a_GM = 1.8309;
