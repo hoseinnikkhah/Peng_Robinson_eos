@@ -115,10 +115,44 @@ title('GM model vs Exp');
 
 
 % Chrastil Model info
-a_Chrastil = 4.5889;
-b_Chrastil = -12.7501;
+a_Chrastil = [6.2022, 5.4572, 4.41441, 4.1629];
+b_Chrastil = [-23.251, -18.253, -11.774, -10.35];
 c_Chrastil = -6759.0921;
 
+lnS = zeros(4,6);
+lnS_cT = zeros(4,6);
+ln_rho = log(rho_CO2);
+lnS_exp = log(S);
+lnS_exp_cT = zeros(4,6);
+for n=1:4
+    for i=1:6
+        lnS(n,i) = a_Chrastil(n)*log(rho_CO2(n,i)) + b_Chrastil(n) + c_Chrastil/T(n);
+        lnS_cT(n,i) = lnS(n,i) - c_Chrastil/T(n);
+        lnS_exp_cT (n,i) = lnS_exp (n,i) - c_Chrastil/T(n);
+    end
+end
+
+
+figure(3);
+hold on;
+
+% Plot lines
+plot(ln_rho(1,:), lnS_cT(1,:), 'DisplayName', '308 K');
+plot(ln_rho(2,:), lnS_cT(2,:), 'DisplayName', '318 K');
+plot(ln_rho(3,:), lnS_cT(3,:), 'DisplayName', '328 K');
+plot(ln_rho(4,:), lnS_cT(4,:), 'DisplayName', '338 K');
+
+% Scatter points
+scatter(ln_rho(1,:), lnS_exp_cT(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
+scatter(ln_rho(2,:), lnS_exp_cT(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
+scatter(ln_rho(3,:), lnS_exp_cT(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
+scatter(ln_rho(4,:), lnS_exp_cT(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
+
+xlabel('Density (kg/m^3)');
+ylabel('lny - c/T');
+
+legend('Location', 'best');
+title('Chrastil Model vs Exp');
 
 
 % Bartle et al. Model info
