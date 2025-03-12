@@ -184,6 +184,9 @@ b_Sung = -606.0322;
 c_Sung = -447.5124;
 d_Sung = -36.8120;
 
+ln_y_Sung = zeros(4,6);
+ln_y_Sung_cT = zeros(4,6);
+
 for n=1:4
     for i=1:6
     ln_y_Sung(n,i) = (a_Sung + (b_Sung/T(n)))*(log(rho_CO2(n,i))) + (c_Sung/T(n)) + d_Sung;
