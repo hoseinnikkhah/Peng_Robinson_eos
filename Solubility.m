@@ -223,7 +223,7 @@ a_Bian = 4.2910;
 b_Bian = -4806.5989;
 c_Bian = 0.0355;
 d_Bian = -1.0456;
-e_Bian = -9.5861*10^4;
+e_Bian = -9.5861*10^-4;
 
 ln_y_Bian = zeros(4,6);
 for n=1:4
@@ -232,6 +232,7 @@ for n=1:4
     end
 end
 
+y_Bian = exp(ln_y_Bian);
 
 
 
