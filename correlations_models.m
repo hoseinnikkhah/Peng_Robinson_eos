@@ -111,13 +111,15 @@ xlabel('Density (kg/m^3)');
 ylabel('lny - c/T');
 
 legend('Location', 'best');
-title('KJ model vs Exp');
+title('GM model vs Exp');
 
 
 % Chrastil Model info
 a_Chrastil = 4.5889;
 b_Chrastil = -12.7501;
 c_Chrastil = -6759.0921;
+
+
 
 % Bartle et al. Model info
 a_Bartle = 13.2886;
