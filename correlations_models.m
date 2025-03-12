@@ -85,14 +85,14 @@ x_axis = zeros(4,6);
 y_GM = zeros(4,6);
 for n=1:4
     for i=1:6
-        ln_y_GM(n,i) = a_GM + b_GM/T(n) + c_GM*log(rho_CO2(n,i)*T(n));
+        ln_y_GM(n,i) = a_GM + b_GM/T(n) + c_GM(n)*log(rho_CO2(n,i)*T(n));
         y_axis(n,i) = ln_y_GM(n,i) - b_GM/T(n);
         x_axis(n,i) = log(rho_CO2(n,i)*T(n));
         y_GM(n,i) = ln_y_a(n,i) - b_GM/T(n);
     end
 end 
 
-figure(1);
+figure(2);
 hold on;
 
 % Plot lines
