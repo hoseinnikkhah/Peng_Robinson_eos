@@ -29,17 +29,92 @@ end
 % C_drug = [0.021 0.026 0.029 0.039 0.046 0.066];     % solubility or concentration [g/L]
 
 
+y_a = y_b/10^6;
+
+ln_y_b = log(y_b);
+ln_y_a = log(y_a);
+
 % KJ Model info
 a_KJ = -2.4761;
-b_KJ = 5.2409*10^3;
+b_KJ = [0.0041509,0.0048209,0.0052409,0.0058409];
 c_KJ = -4550.5306;
 
 ln_y_KJ = zeros(4,6);
+ln_y_KJ_cT = zeros(4,6);
 
+for n=1:4
+    for i=1:6
+        ln_y_KJ(n,i) = a_KJ + b_KJ(n)*rho_CO2(n,i) + c_KJ/T(n);
+        ln_y_KJ_cT(n,i) = ln_y_KJ(n,i) - c_KJ/T(n);
 
-
+    end
+end
 
 figure(1);
+hold on;
+
+% Plot lines
+plot(rho_CO2(1,:), ln_y_KJ_cT(1,:), 'DisplayName', '308 K');
+plot(rho_CO2(2,:), ln_y_KJ_cT(2,:), 'DisplayName', '318 K');
+plot(rho_CO2(3,:), ln_y_KJ_cT(3,:), 'DisplayName', '328 K');
+plot(rho_CO2(4,:), ln_y_KJ_cT(4,:), 'DisplayName', '338 K');
+
+% Scatter points
+scatter(rho_CO2(1,:), ln_y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
+scatter(rho_CO2(2,:), ln_y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
+scatter(rho_CO2(3,:), ln_y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
+scatter(rho_CO2(4,:), ln_y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
+
+xlabel('Density (kg/m^3)');
+ylabel('lny - c/T');
+
+legend('Location', 'best');
+title('KJ model vs Exp');
+
+
+
+% GM Model info
+a_GM = [-59.074,-50.113,-37.359,-34.48];
+b_GM = -5710.4987;
+c_GM = [5.2022,4.4572,3.4141,3.1629];
+
+ln_y_GM = zeros(4,6);
+y_axis = zeros(4,6);
+x_axis = zeros(4,6);
+
+y_GM = zeros(4,6);
+for n=1:4
+    for i=1:6
+        ln_y_GM(n,i) = a_GM(n) + b_GM/T(n) + c_GM(n)*log(rho_CO2(n,i)*T(n));
+        y_axis(n,i) = ln_y_GM(n,i) - b_GM/T(n);
+        x_axis(n,i) = log(rho_CO2(n,i)*T(n));
+        y_GM(n,i) = ln_y_a(n,i) - b_GM/T(n);
+    end
+end 
+
+figure(2);
+hold on;
+
+% Plot lines
+plot(x_axis(1,:), y_axis(1,:), 'DisplayName', '308 K');
+plot(x_axis(2,:), y_axis(2,:), 'DisplayName', '318 K');
+plot(x_axis(3,:), y_axis(3,:), 'DisplayName', '328 K');
+plot(x_axis(4,:), y_axis(4,:), 'DisplayName', '338 K');
+
+% Scatter points
+scatter(x_axis(1,:), y_GM(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
+scatter(x_axis(2,:), y_GM(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
+scatter(x_axis(3,:), y_GM(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
+scatter(x_axis(4,:), y_GM(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
+
+xlabel('Density (kg/m^3)');
+ylabel('lny - c/T');
+
+legend('Location', 'best');
+title('GM model vs Exp');
+
+
+figure(3);
 hold on;
 scatter(P, S(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');  
 scatter(P, S(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');  
