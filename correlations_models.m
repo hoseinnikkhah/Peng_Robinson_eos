@@ -29,6 +29,7 @@ y_b =   [2.03 2.32 2.48 3.33 3.80 5.32;
         1.29 1.96 3.76 4.08 5.36 7.22;
         0.90 1.52 4.39 4.94 6.10 8.01];        % mole fraction
 
+y_b_6 = y_b/10^6;
 ln_y_b = log(y_b);
 
 % KJ Model info
@@ -85,10 +86,10 @@ ln_y_b_GM = zeros(4,6);
 for n=1:4
     for i=1:6
         ln_y_GM(n,i) = a_GM + (b_GM/T(n)) + c_GM(n)*log(rho_CO2(n,i)*T(n));
-        ln_y_GM_bT(n,i) = ln_y_GM(n,i) + b_GM/T(n);
+        ln_y_GM_bT(n,i) = ln_y_GM(n,i) - b_GM/T(n);
         ln_rho_T(n,i) = log(rho_CO2(n,i)*T(n));
 
-        ln_y_b_GM(n,i) = ln_y_b(n,i) - b_GM/T(n);
+        ln_y_b_GM(n,i) = log(y_b_6(n,i)) - b_GM/T(n);
     end
 end
 
