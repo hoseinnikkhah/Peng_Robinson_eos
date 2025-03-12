@@ -29,9 +29,10 @@ y_b =   [2.03 2.32 2.48 3.33 3.80 5.32;
         1.29 1.96 3.76 4.08 5.36 7.22;
         0.90 1.52 4.39 4.94 6.10 8.01];        % mole fraction
 
-
+y_a = y_b/10^6;
 
 ln_y_b = log(y_b);
+ln_y_a = log(y_a);
 
 % KJ Model info
 a_KJ = -2.4761;
@@ -77,37 +78,41 @@ a_GM = 1.8309;
 b_GM = -5710.4987;
 c_GM = [0.29142,0.24342,0.20242,0.1598];
 
-
 ln_y_GM = zeros(4,6);
-ln_y_GM_bT = zeros(4,6);
-ln_rho_T = zeros(4,6);
-ln_y_b_GM = zeros(4,6);
+y_axis = zeros(4,6);
+x_axis = zeros(4,6);
 
-
-y_b_small = y_b*10^-6;
-ln_y_b_small = log(y_b_small);
+y_GM = zeros(4,6);
 for n=1:4
     for i=1:6
-        ln_y_GM(n,i) = a_GM + (b_GM/T(n)) + c_GM(n)*log(rho_CO2(n,i)*T(n));
-        ln_y_GM_bT(n,i) = ln_y_GM(n,i) - b_GM/T(n);
-        ln_rho_T(n,i) = log(rho_CO2(n,i)*T(n));
-
-        ln_y_b_GM(n,i) = ln_y_b_small(n,i) - b_GM/T(n);
+        ln_y_GM(n,i) = a_GM + b_GM/T(n) + c_GM*log(rho_CO2(n,i)*T(n));
+        y_axis(n,i) = ln_y_GM(n,i) - b_GM/T(n);
+        x_axis(n,i) = log(rho_CO2(n,i)*T(n));
+        y_GM(n,i) = ln_y_a(n,i) - b_GM/T(n);
     end
-end
+end 
 
-figure(2);
+figure(1);
 hold on;
-plot(ln_rho_T(1,:), ln_y_GM_bT(1,:), 'DisplayName', '308 K');
-plot(ln_rho_T(2,:), ln_y_GM_bT(2,:), 'DisplayName', '318 K');
-plot(ln_rho_T(3,:), ln_y_GM_bT(3,:), 'DisplayName', '328 K');
-plot(ln_rho_T(4,:), ln_y_GM_bT(4,:), 'DisplayName', '338 K');
+
+% Plot lines
+plot(x_axis(1,:), y_axis(1,:), 'DisplayName', '308 K');
+plot(x_axis(2,:), y_axis(2,:), 'DisplayName', '318 K');
+plot(x_axis(3,:), y_axis(3,:), 'DisplayName', '328 K');
+plot(x_axis(4,:), y_axis(4,:), 'DisplayName', '338 K');
 
 % Scatter points
-scatter(ln_rho_T(1,:), ln_y_b_GM(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
-scatter(ln_rho_T(2,:), ln_y_b_GM(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
-scatter(ln_rho_T(3,:), ln_y_b_GM(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
-scatter(ln_rho_T(4,:), ln_y_b_GM(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
+scatter(x_axis(1,:), y_GM(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
+scatter(x_axis(2,:), y_GM(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
+scatter(x_axis(3,:), y_GM(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
+scatter(x_axis(4,:), y_GM(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
+
+xlabel('Density (kg/m^3)');
+ylabel('lny - c/T');
+
+legend('Location', 'best');
+title('KJ model vs Exp');
+
 
 % Chrastil Model info
 a_Chrastil = 4.5889;
