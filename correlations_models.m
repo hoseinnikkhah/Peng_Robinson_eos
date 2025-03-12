@@ -42,22 +42,18 @@ for n=1:4
     for i=1:6
         ln_y_KJ(n,i) = a_KJ + b_KJ*rho_CO2(n,i) + c_KJ/T(n);
         ln_y_KJ_cT(n,i) = ln_y_KJ(n,i) - c_KJ/T(n);
-        ln_y_b_cT(n,i) = log(y_b(n,i)) + c_KJ/T(n);
+
     end
 end
-ln_y_b_cT = -1*ln_y_b_cT;
-ln_y_KJ = -1*ln_y_KJ;
+
 figure(1);
 hold on;
-plot(rho_CO2(1,:),ln_y_KJ(1,:));
-plot(rho_CO2(2,:),ln_y_KJ(2,:));
-plot(rho_CO2(3,:),ln_y_KJ(3,:));
-plot(rho_CO2(4,:),ln_y_KJ(4,:));
+plot(rho_CO2(1,:),ln_y_KJ_cT(1,:));
+plot(rho_CO2(2,:),ln_y_KJ_cT(2,:));
+plot(rho_CO2(3,:),ln_y_KJ_cT(3,:));
+plot(rho_CO2(4,:),ln_y_KJ_cT(4,:));
 
-scatter(rho_CO2(1,:),ln_y_b_cT(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
-scatter(rho_CO2(2,:),ln_y_b_cT(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');
-scatter(rho_CO2(3,:),ln_y_b_cT(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');
-scatter(rho_CO2(4,:),ln_y_b_cT(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');
+
 
 legend()
 xlabel('Density (kg/m^3)');
