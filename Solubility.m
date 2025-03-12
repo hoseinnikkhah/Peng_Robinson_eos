@@ -249,6 +249,7 @@ for n=1:4
     end
 end
 y_sod = exp(lnY_Sod);
+y_sod = y_sod*10^6;
 figure(5);
 hold on;
 
