@@ -61,12 +61,12 @@ scatter(rho_CO2(2,:), ln_y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'Displa
 scatter(rho_CO2(3,:), ln_y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
 scatter(rho_CO2(4,:), ln_y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
 
-% Axis labels
 xlabel('Density (kg/m^3)');
 ylabel('lny - c/T');
 
-% Add legend
 legend('Location', 'best');
+title('KJ model vs Exp');
+
 
 
 % GM Model info
