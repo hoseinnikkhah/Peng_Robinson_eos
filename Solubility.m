@@ -219,3 +219,62 @@ title('Sodeifian Model vs Exp');
 legend('Location', 'best');
 
 sgtitle('Comparison of Different Models with Experimental Data', 'FontSize', 14, 'FontWeight', 'bold');
+
+
+figure(6);
+% Subplot 1: Solubility vs. Pressure (S)
+subplot(2,2,1);
+hold on;
+scatter(P, S(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');  
+scatter(P, S(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');  
+scatter(P, S(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');  
+scatter(P, S(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');  
+xlabel('Pressure [bar]');
+ylabel('Drug solubility');
+title('Solubility vs. Pressure (S)');
+legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
+xlim([115 280]);
+ytickformat('%.2f');
+
+% Subplot 2: Solubility vs. Pressure (y_b)
+subplot(2,2,2);
+hold on;
+scatter(P, y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
+scatter(P, y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');  
+scatter(P, y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');  
+scatter(P, y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');  
+xlabel('Pressure [bar]');
+ylabel('Drug solubility');
+title('Solubility vs. Pressure (y_b)');
+legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
+xlim([115 280]);
+ytickformat('%.2f');
+yticks(0.4:1:8.4);
+
+% Subplot 3: Solubility vs. Density (S)
+subplot(2,2,3);
+hold on;
+scatter(rho_CO2(1,:), S(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
+scatter(rho_CO2(2,:), S(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');
+scatter(rho_CO2(3,:), S(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');
+scatter(rho_CO2(4,:), S(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');
+xlabel('Density [kg/m3]');
+ylabel('Drug solubility');
+title('Solubility vs. Density (S)');
+legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
+xlim([260 960]);
+
+% Subplot 4: Solubility vs. Density (y_b)
+subplot(2,2,4);
+hold on;
+scatter(rho_CO2(1,:), y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
+scatter(rho_CO2(2,:), y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');
+scatter(rho_CO2(3,:), y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');
+scatter(rho_CO2(4,:), y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');
+xlabel('Density [kg/m3]');
+ylabel('Drug solubility');
+title('Solubility vs. Density (y_b)');
+legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
+xlim([260 960]);
+ytickformat('%.2f');
+yticks(0.4:1:8.4);
