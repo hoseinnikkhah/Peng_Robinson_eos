@@ -274,6 +274,13 @@ scatter(rho_CO2(2,:), y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayNa
 scatter(rho_CO2(3,:), y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
 scatter(rho_CO2(4,:), y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
 
+xlabel('Density (kg/m^3)');
+ylabel('y (10^6)');
+
+legend('Location', 'best');
+title('odeifian Model vs Exp');
+
+
 figure(6);
 % Subplot 1: Solubility vs. Pressure (S)
 subplot(2,2,1);
