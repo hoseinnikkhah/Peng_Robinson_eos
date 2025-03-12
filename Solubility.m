@@ -249,7 +249,8 @@ for n=1:4
     end
 end
 y_sod = exp(lnY_Sod);
-y_sod = y_sod*10^6;
+y_sod = y_sod*10^7;
+y_sod = fliplr(y_sod);
 figure(5);
 hold on;
 
@@ -258,6 +259,13 @@ plot(ln_rho(1,:), y_sod(1,:), 'DisplayName', '308 K');
 plot(ln_rho(2,:), y_sod(2,:), 'DisplayName', '318 K');
 plot(ln_rho(3,:), y_sod(3,:), 'DisplayName', '328 K');
 plot(ln_rho(4,:), y_sod(4,:), 'DisplayName', '338 K');
+
+
+% Scatter points
+scatter(ln_rho(1,:), ln_y_exp_ct(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
+scatter(ln_rho(2,:), ln_y_exp_ct(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
+scatter(ln_rho(3,:), ln_y_exp_ct(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
+scatter(ln_rho(4,:), ln_y_exp_ct(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
 
 figure(6);
 % Subplot 1: Solubility vs. Pressure (S)
