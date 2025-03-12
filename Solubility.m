@@ -132,7 +132,7 @@ title('GM model vs Exp');
 
 
 % Chrastil Model info
-a_Chrastil = [6.2022, 54572, 4.41441, 4.1629];
+a_Chrastil = [6.2022, 5.4572, 4.41441, 4.1629];
 b_Chrastil = [-23.251, -18.253, -11.774, -10.35];
 c_Chrastil = -6759.0921;
 
