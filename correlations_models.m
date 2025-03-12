@@ -74,6 +74,26 @@ a_GM = 1.8309;
 b_GM = -5710.4987;
 c_GM = 3.8342;
 
+
+ln_y_GM = zeros(4,6);
+ln_y_GM_bT = zeros(4,6);
+ln_rho_T = zeros(4,6);
+for n=1:4
+    for i=1:6
+        ln_y_GM(n,i) = a_GM + b_GM/T(n) + c_GM*log(rho_CO2(n,i)*T(n));
+        ln_y_GM_bT(n,i) = ln_y_GM(n,i) - b_GM/T(n);
+        ln_rho_T(n,i) = log(rho_CO2(n,i)*T(n));
+    end
+end
+
+figure(2);
+hold on;
+plot(ln_rho_T(1,:), ln_y_GM_bT(1,:), 'DisplayName', '308 K');
+plot(ln_rho_T(2,:), ln_y_GM_bT(2,:), 'DisplayName', '318 K');
+plot(ln_rho_T(3,:), ln_y_GM_bT(3,:), 'DisplayName', '328 K');
+plot(ln_rho_T(4,:), ln_y_GM_bT(4,:), 'DisplayName', '338 K');
+
+
 % Chrastil Model info
 a_Chrastil = 4.5889;
 b_Chrastil = -12.7501;
