@@ -29,7 +29,7 @@ y_b =   [2.03 2.32 2.48 3.33 3.80 5.32;
         1.29 1.96 3.76 4.08 5.36 7.22;
         0.90 1.52 4.39 4.94 6.10 8.01];        % mole fraction
 
-ln_y_b = log(y_b);
+
 % KJ Model info
 a_KJ = -2.4761;
 b_KJ = 5.2409*10^-3;
@@ -37,10 +37,12 @@ c_KJ = -4550.5306;
 
 ln_y_KJ = zeros(4,6);
 ln_y_KJ_cT = zeros(4,6);
+ln_y_b_cT = zeros(4,6);
 for n=1:4
     for i=1:6
         ln_y_KJ(n,i) = a_KJ + b_KJ*rho_CO2(n,i) + c_KJ/T(n);
         ln_y_KJ_cT(n,i) = ln_y_KJ(n,i) - c_KJ/T(n);
+        ln_y_b_cT(n,i) = log(y_b(n,i)) - c_KJ/T(n);
     end
 end
 
@@ -50,6 +52,9 @@ plot(rho_CO2(1,:),ln_y_KJ_cT(1,:));
 plot(rho_CO2(2,:),ln_y_KJ_cT(2,:));
 plot(rho_CO2(3,:),ln_y_KJ_cT(3,:));
 plot(rho_CO2(4,:),ln_y_KJ_cT(4,:));
+scatter(rho_CO2(1,:),ln_y_b_cT(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
+scatter(rho_CO2(2,:),ln_y_b_cT(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');
+scatter(rho_CO2(3,:),ln_y_b_cT(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');
 
 legend()
 xlabel('Density (kg/m^3)');
