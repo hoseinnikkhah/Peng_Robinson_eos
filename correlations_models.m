@@ -73,7 +73,7 @@ title('KJ model vs Exp');
 % GM Model info
 a_GM = 1.8309;
 b_GM = -5710.4987;
-c_GM = 3.8342;
+c_GM = [0.29142,0.24342,0.20242,0.1598]''
 
 
 ln_y_GM = zeros(4,6);
@@ -84,7 +84,7 @@ ln_y_b_GM = zeros(4,6);
 
 for n=1:4
     for i=1:6
-        ln_y_GM(n,i) = a_GM + (b_GM/T(n)) + c_GM*log(rho_CO2(n,i)*T(n));
+        ln_y_GM(n,i) = a_GM + (b_GM/T(n)) + c_GM(n)*log(rho_CO2(n,i)*T(n));
         ln_y_GM_bT(n,i) = ln_y_GM(n,i) + b_GM/T(n);
         ln_rho_T(n,i) = log(rho_CO2(n,i)*T(n));
 
