@@ -171,6 +171,25 @@ ylabel('lny - c/T');
 legend('Location', 'best');
 title('Chrastil Model vs Exp');
 
+% Bartle et al. Model info
+% This model has an issue in the paper
+a_Bartle = 13.2886;
+b_Bartle = 9.0827;
+c_Bartle = -6845.6966;
+
+
+% Sung-Shim Model info
+a_Sung = 5.7399;
+b_Sung = -606.0322;
+c_Sung = -447.5124;
+d_Sung = -36.8120;
+
+for n=1:4
+    for i=1:6
+    ln_y_Sung(n,i) = (a_Sung + (b_Sung/T(n)))*(log(rho_CO2(n,i))) + (c_Sung/T(n)) + d_Sung;
+    ln_y_Sung_cT(n,i) = ln_y_Sung(n,i) - ((c_Sung/T(n)) + d_Sung);
+    end
+end
 
 figure(4);
 % Subplot 1: Solubility vs. Pressure (S)
