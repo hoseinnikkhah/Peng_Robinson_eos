@@ -191,7 +191,7 @@ for n=1:4
     for i=1:6
     ln_y_Sung(n,i) = (a_Sung + (b_Sung/T(n)))*(log(rho_CO2(n,i))) + (c_Sung/T(n)) + d_Sung;
     ln_y_Sung_cT(n,i) = ln_y_Sung(n,i) - ((c_Sung/T(n)) + d_Sung);
-    ln_y_exp_ct(n,i) = ln_y_a(n,i) - - ((c_Sung/T(n)) + d_Sung);
+    ln_y_exp_ct(n,i) = ln_y_a(n,i) - ((c_Sung/T(n)) + d_Sung);
     end
 end
 
