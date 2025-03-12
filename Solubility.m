@@ -150,7 +150,26 @@ for n=1:4
 end
 
 
+figure(3);
+hold on;
 
+% Plot lines
+plot(ln_rho(1,:), lnS_cT(1,:), 'DisplayName', '308 K');
+plot(ln_rho(2,:), lnS_cT(2,:), 'DisplayName', '318 K');
+plot(ln_rho(3,:), lnS_cT(3,:), 'DisplayName', '328 K');
+plot(ln_rho(4,:), lnS_cT(4,:), 'DisplayName', '338 K');
+
+% Scatter points
+scatter(ln_rho(1,:), lnS_exp_cT(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
+scatter(ln_rho(2,:), lnS_exp_cT(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
+scatter(ln_rho(3,:), lnS_exp_cT(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
+scatter(ln_rho(4,:), lnS_exp_cT(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
+
+xlabel('Density (kg/m^3)');
+ylabel('lny - c/T');
+
+legend('Location', 'best');
+title('GM model vs Exp');
 
 
 figure(4);
