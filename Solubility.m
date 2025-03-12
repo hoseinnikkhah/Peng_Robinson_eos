@@ -231,11 +231,23 @@ for n=1:4
         ln_y_Bian(n,i) = a_Bian + (b_Bian/T(n)) + ((c_Bian*rho_CO2(n,i))/T(n)) + (d_Bian + e_Bian*rho_CO2(n,i))*log(rho_CO2(n,i));
     end
 end
-
+% there is something wrong here
 y_Bian = exp(ln_y_Bian);
 
+% Sodeifian model info
+a_Sodeifian = -16.8909;
+b_Sodeifian = -13.0866*10^-3;
+c_Sodeifian = 1.4181;
+d_Sodeifian = 1.1071*10^-3;
+e_Sodeifian = -2.9406*10^-3;
+f_Sodeifian = -838.2700;
 
-
+lnY_Sod = zeros(4,6);
+for n=1:4
+    for i=1:6
+        lnY_Sod(n,i) = a_Sodeifian + b_Sodeifian*((P(i)^2)/T(n)) + c_Sodeifian*log(rho_CO2(n,i)*T(n)) + d_Sodeifian*rho_CO2(n,i)*log(rho_CO2(n,i)) + e_Sodeifian*P(i)*log(T(n)) + f_Sodeifian*(log(rho_CO2(n,i))/T(n));
+    end
+end
 
 figure(5);
 % Subplot 1: Solubility vs. Pressure (S)
