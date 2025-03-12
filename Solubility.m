@@ -132,8 +132,8 @@ title('GM model vs Exp');
 
 
 % Chrastil Model info
-a_Chrastil = 4.5889;
-b_Chrastil = -12.7501;
+a_Chrastil = [6.2022, 54572, 4.41441, 4.1629];
+b_Chrastil = [-23.251, -18.253, -11.774, -10.35];
 c_Chrastil = -6759.0921;
 
 lnS = zeros(4,6);
@@ -143,13 +143,17 @@ lnS_exp = log(S);
 lnS_exp_cT = zeros(4,6);
 for n=1:4
     for i=1:6
-        lnS(n,i) = a_Chrastil*log(rho_CO2(n,i)) + b_Chrastil + c_Chrastil/T(n);
+        lnS(n,i) = a_Chrastil(n)*log(rho_CO2(n,i)) + b_Chrastil(n) + c_Chrastil/T(n);
         lnS_cT(n,i) = lnS(n,i) - c_Chrastil/T(n);
         lnS_exp_cT (n,i) = lnS_exp (n,i) - c_Chrastil/T(n);
     end
 end
 
-figure(3);
+
+
+
+
+figure(4);
 % Subplot 1: Solubility vs. Pressure (S)
 subplot(2,2,1);
 hold on;
