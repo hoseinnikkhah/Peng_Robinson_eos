@@ -169,7 +169,7 @@ xlabel('Density (kg/m^3)');
 ylabel('lny - c/T');
 
 legend('Location', 'best');
-title('GM model vs Exp');
+title('Chrastil Model vs Exp');
 
 
 figure(4);
