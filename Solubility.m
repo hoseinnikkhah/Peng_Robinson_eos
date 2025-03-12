@@ -42,9 +42,6 @@ for j=1:4
         S(j,i) = (rho_CO2(j,i) * y_1(j,i) * Mw_drug)/(Mw_CO2 * (1 - y_1(j,i)));
     end
 end
-% S = S*100;
-% C_drug = [0.021 0.026 0.029 0.039 0.046 0.066];     % solubility or concentration [g/L]
-
 
 y_a = y_b/10^6;
 
@@ -63,32 +60,8 @@ for n=1:4
     for i=1:6
         ln_y_KJ(n,i) = a_KJ + b_KJ(n)*rho_CO2(n,i) + c_KJ/T(n);
         ln_y_KJ_cT(n,i) = ln_y_KJ(n,i) - c_KJ/T(n);
-
     end
 end
-
-figure(1);
-hold on;
-
-% Plot lines
-plot(rho_CO2(1,:), ln_y_KJ_cT(1,:), 'DisplayName', '308 K');
-plot(rho_CO2(2,:), ln_y_KJ_cT(2,:), 'DisplayName', '318 K');
-plot(rho_CO2(3,:), ln_y_KJ_cT(3,:), 'DisplayName', '328 K');
-plot(rho_CO2(4,:), ln_y_KJ_cT(4,:), 'DisplayName', '338 K');
-
-% Scatter points
-scatter(rho_CO2(1,:), ln_y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
-scatter(rho_CO2(2,:), ln_y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
-scatter(rho_CO2(3,:), ln_y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
-scatter(rho_CO2(4,:), ln_y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
-
-xlabel('Density (kg/m^3)');
-ylabel('lny - c/T');
-
-legend('Location', 'best');
-title('KJ model vs Exp');
-
-
 
 % GM Model info
 a_GM = [-59.074,-50.113,-37.359,-34.48];
@@ -109,28 +82,6 @@ for n=1:4
     end
 end 
 
-figure(2);
-hold on;
-
-% Plot lines
-plot(x_axis(1,:), y_axis(1,:), 'DisplayName', '308 K');
-plot(x_axis(2,:), y_axis(2,:), 'DisplayName', '318 K');
-plot(x_axis(3,:), y_axis(3,:), 'DisplayName', '328 K');
-plot(x_axis(4,:), y_axis(4,:), 'DisplayName', '338 K');
-
-% Scatter points
-scatter(x_axis(1,:), y_GM(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
-scatter(x_axis(2,:), y_GM(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
-scatter(x_axis(3,:), y_GM(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
-scatter(x_axis(4,:), y_GM(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
-
-xlabel('Density (kg/m^3)');
-ylabel('lny - c/T');
-
-legend('Location', 'best');
-title('GM model vs Exp');
-
-
 % Chrastil Model info
 a_Chrastil = [6.2022, 5.4572, 4.41441, 4.1629];
 b_Chrastil = [-23.251, -18.253, -11.774, -10.35];
@@ -149,35 +100,6 @@ for n=1:4
     end
 end
 
-
-figure(3);
-hold on;
-
-% Plot lines
-plot(ln_rho(1,:), lnS_cT(1,:), 'DisplayName', '308 K');
-plot(ln_rho(2,:), lnS_cT(2,:), 'DisplayName', '318 K');
-plot(ln_rho(3,:), lnS_cT(3,:), 'DisplayName', '328 K');
-plot(ln_rho(4,:), lnS_cT(4,:), 'DisplayName', '338 K');
-
-% Scatter points
-scatter(ln_rho(1,:), lnS_exp_cT(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
-scatter(ln_rho(2,:), lnS_exp_cT(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
-scatter(ln_rho(3,:), lnS_exp_cT(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
-scatter(ln_rho(4,:), lnS_exp_cT(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
-
-xlabel('Density (kg/m^3)');
-ylabel('lny - c/T');
-
-legend('Location', 'best');
-title('Chrastil Model vs Exp');
-
-% Bartle et al. Model info
-% This model has an issue in the paper
-a_Bartle = 13.2886;
-b_Bartle = 9.0827;
-c_Bartle = -6845.6966;
-
-
 % Sung-Shim Model info
 a_Sung = 5.7399;
 b_Sung = -606.0322;
@@ -195,45 +117,7 @@ for n=1:4
     end
 end
 
-figure(4);
-hold on;
-
-% Plot lines
-plot(ln_rho(1,:), ln_y_Sung_cT(1,:), 'DisplayName', '308 K');
-plot(ln_rho(2,:), ln_y_Sung_cT(2,:), 'DisplayName', '318 K');
-plot(ln_rho(3,:), ln_y_Sung_cT(3,:), 'DisplayName', '328 K');
-plot(ln_rho(4,:), ln_y_Sung_cT(4,:), 'DisplayName', '338 K');
-
-% Scatter points
-scatter(ln_rho(1,:), ln_y_exp_ct(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
-scatter(ln_rho(2,:), ln_y_exp_ct(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
-scatter(ln_rho(3,:), ln_y_exp_ct(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
-scatter(ln_rho(4,:), ln_y_exp_ct(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
-
-xlabel('Density (kg/m^3)');
-ylabel('lny - c/T');
-
-legend('Location', 'best');
-title('Sung-Shim Model vs Exp');
-
-
-
-% Bian et al model info
-a_Bian = 4.2910;
-b_Bian = -4806.5989;
-c_Bian = 0.0355;
-d_Bian = -1.0456;
-e_Bian = -9.5861*10^-4;
-
-ln_y_Bian = zeros(4,6);
-for n=1:4
-    for i=1:6
-        ln_y_Bian(n,i) = a_Bian + (b_Bian/T(n)) + ((c_Bian*rho_CO2(n,i))/T(n)) + (d_Bian + e_Bian*rho_CO2(n,i))*log(rho_CO2(n,i));
-    end
-end
-% there is something wrong here
-y_Bian = exp(ln_y_Bian);
-
+% Sodeifian model info
 a_Sodeifian = -16.8909;
 b_Sodeifian = -13.0866*10^-3;
 c_Sodeifian = 1.4181;
@@ -257,84 +141,81 @@ sod_fix = [2.0 2.1 2.1 1.6 0.8 0;
 
 y_sod = y_sod + sod_fix;
 
-figure(5);
-hold on;
+% Create single figure with subplots for all models
+figure('Position', [100, 100, 1200, 900]);
 
 colors = {'r', 'g', 'b', 'm'};
 temps = {'308 K', '318 K', '328 K', '338 K'};
+markers = {'o', 's', 'd', '^'};
 
+% KJ Model subplot
+subplot(3,2,1);
+hold on;
+for n=1:4
+    rho_fine = linspace(min(rho_CO2(n,:)), max(rho_CO2(n,:)), 100);
+    y_KJ_smooth = pchip(rho_CO2(n,:), ln_y_KJ_cT(n,:), rho_fine);
+    plot(rho_fine, y_KJ_smooth, [colors{n}, '-'], 'LineWidth', 1.5, 'DisplayName', temps{n});
+    scatter(rho_CO2(n,:), ln_y_b(n,:), 20, colors{n}, markers{n}, 'MarkerFaceColor', colors{n}, 'DisplayName', [temps{n}, ' (Data)']);
+end
+xlabel('Density (kg/m^3)');
+ylabel('lny - c/T');
+title('KJ model vs Exp');
+legend('Location', 'best');
+
+% GM Model subplot
+subplot(3,2,2);
+hold on;
+for n=1:4
+    x_fine = linspace(min(x_axis(n,:)), max(x_axis(n,:)), 100);
+    y_GM_smooth = pchip(x_axis(n,:), y_axis(n,:), x_fine);
+    plot(x_fine, y_GM_smooth, [colors{n}, '-'], 'LineWidth', 1.5, 'DisplayName', temps{n});
+    scatter(x_axis(n,:), y_GM(n,:), 20, colors{n}, markers{n}, 'MarkerFaceColor', colors{n}, 'DisplayName', [temps{n}, ' (Data)']);
+end
+xlabel('ln(ρT)');
+ylabel('lny - c/T');
+title('GM model vs Exp');
+legend('Location', 'best');
+
+% Chrastil Model subplot
+subplot(3,2,3);
+hold on;
+for n=1:4
+    rho_ln_fine = linspace(min(ln_rho(n,:)), max(ln_rho(n,:)), 100);
+    lnS_smooth = pchip(ln_rho(n,:), lnS_cT(n,:), rho_ln_fine);
+    plot(rho_ln_fine, lnS_smooth, [colors{n}, '-'], 'LineWidth', 1.5, 'DisplayName', temps{n});
+    scatter(ln_rho(n,:), lnS_exp_cT(n,:), 20, colors{n}, markers{n}, 'MarkerFaceColor', colors{n}, 'DisplayName', [temps{n}, ' (Data)']);
+end
+xlabel('ln(ρ)');
+ylabel('lnS - c/T');
+title('Chrastil Model vs Exp');
+legend('Location', 'best');
+
+% Sung-Shim Model subplot
+subplot(3,2,4);
+hold on;
+for n=1:4
+    rho_ln_fine = linspace(min(ln_rho(n,:)), max(ln_rho(n,:)), 100);
+    y_Sung_smooth = pchip(ln_rho(n,:), ln_y_Sung_cT(n,:), rho_ln_fine);
+    plot(rho_ln_fine, y_Sung_smooth, [colors{n}, '-'], 'LineWidth', 1.5, 'DisplayName', temps{n});
+    scatter(ln_rho(n,:), ln_y_exp_ct(n,:), 20, colors{n}, markers{n}, 'MarkerFaceColor', colors{n}, 'DisplayName', [temps{n}, ' (Data)']);
+end
+xlabel('ln(ρ)');
+ylabel('lny - c/T - d');
+title('Sung-Shim Model vs Exp');
+legend('Location', 'best');
+
+% Sodeifian Model subplot
+subplot(3,2,5);
+hold on;
 for n=1:4
     rho_fine = linspace(min(rho_CO2(n,:)), max(rho_CO2(n,:)), 100);
     y_sod_smooth = pchip(rho_CO2(n,:), y_sod(n,:), rho_fine);
     plot(rho_fine, y_sod_smooth, [colors{n}, '-'], 'LineWidth', 1.5, 'DisplayName', temps{n});
+    scatter(rho_CO2(n,:), y_b(n,:), 20, colors{n}, markers{n}, 'MarkerFaceColor', colors{n}, 'DisplayName', [temps{n}, ' (Data)']);
 end
-
-scatter(rho_CO2(1,:), y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r', 'DisplayName', '308 K (Data)');
-scatter(rho_CO2(2,:), y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g', 'DisplayName', '318 K (Data)');
-scatter(rho_CO2(3,:), y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b', 'DisplayName', '328 K (Data)');
-scatter(rho_CO2(4,:), y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm', 'DisplayName', '338 K (Data)');
-
 xlabel('Density (kg/m^3)');
 ylabel('y (10^6)');
-
+title('Sodeifian Model vs Exp');
 legend('Location', 'best');
-title('odeifian Model vs Exp');
 
-
-figure(6);
-% Subplot 1: Solubility vs. Pressure (S)
-subplot(2,2,1);
-hold on;
-scatter(P, S(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');  
-scatter(P, S(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');  
-scatter(P, S(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');  
-scatter(P, S(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');  
-xlabel('Pressure [bar]');
-ylabel('Drug solubility');
-title('Solubility vs. Pressure (S)');
-legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
-xlim([115 280]);
-ytickformat('%.2f');
-
-% Subplot 2: Solubility vs. Pressure (y_b)
-subplot(2,2,2);
-hold on;
-scatter(P, y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
-scatter(P, y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');  
-scatter(P, y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');  
-scatter(P, y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');  
-xlabel('Pressure [bar]');
-ylabel('Drug solubility');
-title('Solubility vs. Pressure (y_b)');
-legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
-xlim([115 280]);
-ytickformat('%.2f');
-yticks(0.4:1:8.4);
-
-% Subplot 3: Solubility vs. Density (S)
-subplot(2,2,3);
-hold on;
-scatter(rho_CO2(1,:), S(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
-scatter(rho_CO2(2,:), S(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');
-scatter(rho_CO2(3,:), S(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');
-scatter(rho_CO2(4,:), S(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');
-xlabel('Density [kg/m3]');
-ylabel('Drug solubility');
-title('Solubility vs. Density (S)');
-legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
-xlim([260 960]);
-
-% Subplot 4: Solubility vs. Density (y_b)
-subplot(2,2,4);
-hold on;
-scatter(rho_CO2(1,:), y_b(1,:), 20, 'r', 'o', 'MarkerFaceColor', 'r');
-scatter(rho_CO2(2,:), y_b(2,:), 20, 'g', 's', 'MarkerFaceColor', 'g');
-scatter(rho_CO2(3,:), y_b(3,:), 20, 'b', 'd', 'MarkerFaceColor', 'b');
-scatter(rho_CO2(4,:), y_b(4,:), 20, 'm', '^', 'MarkerFaceColor', 'm');
-xlabel('Density [kg/m3]');
-ylabel('Drug solubility');
-title('Solubility vs. Density (y_b)');
-legend('T = 308 K', 'T = 318 K', 'T = 328 K', 'T = 338 K');
-xlim([260 960]);
-ytickformat('%.2f');
-yticks(0.4:1:8.4);
+sgtitle('Comparison of Different Models with Experimental Data', 'FontSize', 14, 'FontWeight', 'bold');
