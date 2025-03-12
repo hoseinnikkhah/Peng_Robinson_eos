@@ -32,7 +32,7 @@ y_b =   [2.03 2.32 2.48 3.33 3.80 5.32;
 
 % KJ Model info
 a_KJ = -2.4761;
-b_KJ = 5.2409*10^-3;
+b_KJ = [0.0041509,0.0048209,0.0052409,0.0058409];
 c_KJ = -4550.5306;
 
 ln_y_KJ = zeros(4,6);
@@ -40,7 +40,7 @@ ln_y_KJ_cT = zeros(4,6);
 ln_y_b = log(y_b);
 for n=1:4
     for i=1:6
-        ln_y_KJ(n,i) = a_KJ + b_KJ*rho_CO2(n,i) + c_KJ/T(n);
+        ln_y_KJ(n,i) = a_KJ + b_KJ(n)*rho_CO2(n,i) + c_KJ/T(n);
         ln_y_KJ_cT(n,i) = ln_y_KJ(n,i) - c_KJ/T(n);
 
     end
