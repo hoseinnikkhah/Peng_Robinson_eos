@@ -145,7 +145,7 @@ for n=1:4
     for i=1:6
         lnS(n,i) = a_Chrastil(n)*log(rho_CO2(n,i)) + b_Chrastil(n) + c_Chrastil/T(n);
         lnS_cT(n,i) = lnS(n,i) - c_Chrastil/T(n);
-        lnS_exp_cT (n,i) = lnS_exp (n,i) - c_Chrastil/T(n);
+        lnS_exp_cT (n,i) = lnS_exp(n,i) - c_Chrastil/T(n);
     end
 end
 
@@ -186,11 +186,12 @@ d_Sung = -36.8120;
 
 ln_y_Sung = zeros(4,6);
 ln_y_Sung_cT = zeros(4,6);
-
+ln_y_exp_ct = zeros(4,6);
 for n=1:4
     for i=1:6
     ln_y_Sung(n,i) = (a_Sung + (b_Sung/T(n)))*(log(rho_CO2(n,i))) + (c_Sung/T(n)) + d_Sung;
     ln_y_Sung_cT(n,i) = ln_y_Sung(n,i) - ((c_Sung/T(n)) + d_Sung);
+    ln_y_exp_ct(n,i) = ln_y_a(n,i) - - ((c_Sung/T(n)) + d_Sung);
     end
 end
 
