@@ -70,7 +70,7 @@ title('KJ model vs Exp');
 
 
 % GM Model info
-a_GM = -42;
+a_GM = -42.5;
 b_GM = -5710.4987;
 c_GM = 3.8342;
 
